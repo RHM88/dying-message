@@ -735,6 +735,9 @@ function beginGame(){
     document.getElementById('hps-acc-section').style.display='flex';
   }
   renderAll();
+  showModal('📖','소설가에게',
+    '지금부터 <strong>소설가는 절대 말할 수 없습니다.</strong>\n\n카드 그림을 보고 연상되는 단어를\n타일로만 힌트를 전달하세요.\n\n탐정들은 눈을 감아주세요! 👀',
+    [{l:'힌트 배치 시작',c:'btn-gold',a:'close'}]);
 }
 
 // ══════ RENDER ALL ══════
@@ -925,7 +928,9 @@ function endHintPhase(){
   G.phase='exclude';
   G.excludeTokens={s:{},t:{},m:{}};
   renderAll();
-  showModal('🔍','추리 시작','소설가의 힌트 배치가 완료됐습니다!\n\n탐정들은 사건과 관련 없다고 생각되는 카드에\n<strong>[제외] 토큰 6개</strong>를 배치하세요.\n\n단, 정답 카드(범인·도구·동기)를 포함하면 실패입니다!',[{l:'추리 시작',c:'btn-gold',a:'close'}]);
+  showModal('🔍','탐정들에게',
+    '소설가의 힌트 배치가 완료됐습니다!\n<strong>소설가는 이제 화면을 탐정에게 넘겨주세요.</strong>\n\n─────────────────\n\n탐정들은 힌트를 분석해\n관련 없다고 생각되는 카드에\n<strong>[제외] 토큰 6개</strong>를 배치하세요.\n\n⚠️ 정답 카드가 포함되면 실패입니다!',
+    [{l:'추리 시작!',c:'btn-gold',a:'close'}]);
 }
 
 // ══════ EXCLUDE PHASE ══════
@@ -1061,8 +1066,14 @@ function renderBottomPanel(){
                 :                    '✓ 배치 버튼을 눌러 힌트를 확정하세요';
 
     bp.innerHTML=`
+      <div style="background:rgba(90,159,212,0.08);border:1px solid rgba(90,159,212,0.2);border-radius:8px;padding:6px 12px;margin-bottom:6px;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:14px;">📖</span>
+        <span style="font-size:10px;color:#80b0e0;line-height:1.5;">
+          <strong>소설가만 조작하세요</strong> — 지금부터 소설가는 절대 말할 수 없습니다. 오직 타일 배치로만 힌트를 전달하세요.
+        </span>
+      </div>
       <div class="bp-row" style="margin-bottom:6px;gap:6px;flex-wrap:wrap;">
-        <span class="bp-title">소설가 힌트 배치</span>
+        <span class="bp-title">힌트 배치 (${G.round}라운드)</span>
         ${catBtns}
         <button class="btn btn-blue" style="margin-left:auto;" onclick="endHintPhase()">힌트 완료 →</button>
       </div>
