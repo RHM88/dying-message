@@ -75,15 +75,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 .start-btn.ready{opacity:1;pointer-events:auto;}
 .start-btn.ready:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(200,169,110,0.3);}
 
-/* ─── EDITION BTN ─── */
-.edition-btn{
-  padding:12px 8px;border-radius:10px;border:1.5px solid var(--border);
-  background:var(--surface2);color:var(--text2);cursor:pointer;
-  transition:all 0.2s;text-align:center;font-family:'Noto Sans KR',sans-serif;
-}
-.edition-btn:hover{border-color:rgba(200,169,110,0.4);color:var(--text);}
-.edition-btn.sel{border-color:var(--gold);color:var(--gold);background:rgba(200,169,110,0.08);box-shadow:0 0 12px rgba(200,169,110,0.15);}
-
 /* ─── ROLE REVEAL ─── */
 #role-screen{
   flex-direction:column;align-items:center;justify-content:center;
@@ -160,7 +151,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 
 /* ─── BOARD LAYOUT ─── */
 .board-body{
-  display:grid;grid-template-columns:1fr 180px;
+  display:flex;flex-direction:column;
   flex:1;min-height:0;
 }
 
@@ -239,29 +230,39 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 .mini-tok.ded{border-color:var(--gold);color:var(--gold);}
 .mini-tok.fail-tok-card{background:var(--red);border-color:#e06060;color:#fff;}
 
-/* RIGHT: hint panel */
+/* TOP: hint panel — 가로 띠 */
 .hint-panel{
-  background:rgba(10,12,18,0.6);border-left:1px solid var(--border);
-  padding:10px 8px;display:flex;flex-direction:column;gap:8px;overflow-y:auto;
+  position:sticky;top:45px;z-index:40;
+  background:rgba(10,12,18,0.95);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--border);
+  padding:8px 16px;
+  display:flex;flex-direction:row;align-items:flex-start;gap:0;
+  overflow-x:auto;
 }
-.hp-section{display:flex;flex-direction:column;gap:4px;}
+.hp-section{
+  display:flex;flex-direction:column;gap:4px;
+  flex:1;min-width:0;padding:0 12px;
+}
+.hp-section:first-child{padding-left:0;}
+.hp-sep{width:1px;background:var(--border);align-self:stretch;flex-shrink:0;margin:2px 0;}
 .hp-label{
-  font-size:7px;letter-spacing:2px;color:var(--text3);text-align:center;
+  font-size:7px;letter-spacing:2px;color:var(--text3);
   padding-bottom:3px;border-bottom:1px solid var(--border);
+  white-space:nowrap;
 }
-.hp-slots{display:flex;flex-direction:column;gap:2px;}
+.hp-slots{display:flex;flex-direction:row;flex-wrap:wrap;gap:3px;}
 .hp-slot{
-  font-size:8px;padding:4px 6px;border-radius:4px;
+  font-size:8px;padding:3px 7px;border-radius:4px;
   border:1px solid var(--border);background:var(--surface2);
-  color:var(--text3);min-height:26px;display:flex;align-items:center;
-  line-height:1.3;
+  color:var(--text3);display:flex;align-items:center;
+  line-height:1.3;white-space:nowrap;
 }
 .hp-slot.filled{
   border-color:rgba(200,169,110,0.3);color:var(--gold);
   background:rgba(200,169,110,0.06);
 }
 .hp-slot.acc.filled{border-color:rgba(160,112,208,0.3);color:var(--purple);background:rgba(160,112,208,0.06);}
-
+.hp-slot.empty{color:var(--text3);opacity:0.35;font-size:7px;}
 /* ─── BOTTOM PANEL ─── */
 .bottom-panel{
   position:sticky;bottom:0;z-index:40;
@@ -342,12 +343,11 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
    반응형 — Desktop 1280px+
 ═══════════════════════════════════════ */
 @media(min-width:1280px){
-  .board-body{grid-template-columns:1fr 220px;}
   .gcard{width:88px;}
   .gcard-art{height:68px;font-size:32px;}
   .gcard-name{font-size:10px;}
-  .hint-panel{padding:14px 12px;gap:12px;}
-  .hp-slot{font-size:9px;min-height:28px;}
+  .hint-panel{padding:10px 24px;}
+  .hp-slot{font-size:9px;}
   .hp-label{font-size:8px;}
   .bottom-panel{padding:14px 24px;}
   .bp-title{font-size:14px;}
@@ -362,11 +362,10 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
    반응형 — iPad 12.9 (1024px)
 ═══════════════════════════════════════ */
 @media(min-width:1024px) and (max-width:1279px){
-  .board-body{grid-template-columns:1fr 200px;}
   .gcard{width:82px;}
   .gcard-art{height:62px;font-size:30px;}
   .gcard-name{font-size:10px;}
-  .hint-panel{padding:12px 10px;}
+  .hint-panel{padding:8px 20px;}
   .hp-slot{font-size:9px;}
   .bottom-panel{padding:12px 20px;}
   .tile{font-size:11px;padding:5px 9px;}
@@ -377,12 +376,11 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
    반응형 — iPad Mini 가로 (768px~1023px)
 ═══════════════════════════════════════ */
 @media(min-width:768px) and (max-width:1023px){
-  .board-body{grid-template-columns:1fr 160px;}
   .gcard{width:70px;}
   .gcard-art{height:54px;font-size:24px;}
   .gcard-name{font-size:8.5px;}
-  .hint-panel{padding:8px 6px;gap:6px;}
-  .hp-slot{font-size:7.5px;min-height:22px;padding:3px 5px;}
+  .hint-panel{padding:7px 14px;}
+  .hp-slot{font-size:7.5px;padding:3px 5px;}
   .hp-label{font-size:6.5px;}
   .bottom-panel{padding:10px 14px;}
   .bp-title{font-size:12px;}
@@ -396,42 +394,25 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 }
 
 /* ═══════════════════════════════════════
-   반응형 — 모바일 / iPad 세로 (~767px)
-   보드를 세로 스크롤 레이아웃으로 전환
+   반응형 — 모바일 (~767px)
 ═══════════════════════════════════════ */
 @media(max-width:767px){
-  /* 타이틀 */
   .title-eyebrow{font-size:9px;}
   .title-main{font-size:clamp(44px,16vw,72px);letter-spacing:3px;}
   .title-sub{font-size:12px;}
   .setup-card{padding:20px 16px;gap:16px;max-width:100%;}
 
-  /* 게임 화면 — 세로 단일 컬럼 */
-  .board-body{
-    grid-template-columns:1fr;
-    grid-template-rows:auto auto;
-  }
-  .hint-panel{
-    grid-column:1;
-    border-left:none;
-    border-top:1px solid var(--border);
-    flex-direction:row;flex-wrap:wrap;
-    padding:10px 12px;gap:8px;
-    background:rgba(10,12,18,0.8);
-  }
-  .hp-section{flex:1;min-width:120px;}
-  .hp-slots{flex-direction:row;flex-wrap:wrap;gap:3px;}
-  .hp-slot{font-size:7px;padding:3px 5px;min-height:20px;}
-  .hp-label{font-size:6px;text-align:left;}
+  .hint-panel{padding:6px 10px;top:40px;}
+  .hp-section{min-width:80px;}
+  .hp-slot{font-size:7px;padding:2px 5px;}
+  .hp-label{font-size:6px;}
 
-  /* 카드 */
   .card-area{padding:10px;}
   .gcard{width:calc((100vw - 44px) / 5);max-width:72px;}
   .gcard-art{height:48px;font-size:20px;}
   .gcard-name{font-size:8px;padding:3px 2px;}
   .card-row{gap:4px;}
 
-  /* 하단 패널 */
   .bottom-panel{padding:10px 12px;gap:6px;}
   .bp-title{font-size:11px;}
   .bp-msg{font-size:9.5px;}
@@ -440,31 +421,10 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
   .tiles-row{gap:3px;}
   .btn{font-size:11px;padding:7px 12px;}
 
-  /* 모달 */
   .modal-content{padding:24px 18px;margin:16px;}
   .modal-title{font-size:18px;}
   .modal-body{font-size:12px;}
-
-  /* 역할 공개 화면 */
   .role-card{padding:28px 20px;}
-}
-
-/* ═══════════════════════════════════════
-   iPad 세로 모드 전용 (768px 세로)
-═══════════════════════════════════════ */
-@media(min-width:768px) and (max-width:1023px) and (orientation:portrait){
-  .board-body{
-    grid-template-columns:1fr;
-    grid-template-rows:auto auto;
-  }
-  .hint-panel{
-    border-left:none;border-top:1px solid var(--border);
-    flex-direction:row;flex-wrap:wrap;padding:10px 14px;gap:10px;
-  }
-  .hp-section{flex:1;min-width:140px;}
-  .hp-slots{flex-direction:row;flex-wrap:wrap;gap:3px;}
-  .gcard{width:80px;}
-  .gcard-art{height:60px;font-size:26px;}
 }
 </style>
 </head>
@@ -480,22 +440,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
     <div class="title-sub">소설가의 마지막 문장</div>
   </div>
   <div class="setup-card">
-    <!-- 에디션 선택 -->
-    <div>
-      <div class="setup-label" style="margin-bottom:10px;">에디션 선택</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-        <button class="edition-btn sel" id="edt-base" onclick="selEdition('base')">
-          <div style="font-size:18px;">📖</div>
-          <div style="font-size:11px;font-weight:700;margin-top:4px;">기본판</div>
-          <div style="font-size:9px;opacity:0.6;margin-top:2px;">용의자 23 / 도구 23 / 동기 9</div>
-        </button>
-        <button class="edition-btn" id="edt-big" onclick="selEdition('big')">
-          <div style="font-size:18px;">📦</div>
-          <div style="font-size:11px;font-weight:700;margin-top:4px;">빅박스</div>
-          <div style="font-size:9px;opacity:0.6;margin-top:2px;">용의자 34 / 도구 34 / 동기 14</div>
-        </button>
-      </div>
-    </div>
     <!-- 플레이어 수 -->
     <div>
       <div class="setup-label" style="margin-bottom:12px;">플레이어 수</div>
@@ -538,9 +482,31 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
     <div class="fail-tokens" id="fail-tokens"></div>
   </div>
 
+  <!-- HINT PANEL — 추리토큰 바로 아래 가로 띠 -->
+  <div class="hint-panel" id="hint-panel">
+    <div class="hp-section">
+      <div class="hp-label">용의자</div>
+      <div class="hp-slots" id="hps-s"></div>
+    </div>
+    <div class="hp-sep"></div>
+    <div class="hp-section">
+      <div class="hp-label">도구</div>
+      <div class="hp-slots" id="hps-t"></div>
+    </div>
+    <div class="hp-sep"></div>
+    <div class="hp-section">
+      <div class="hp-label">동기</div>
+      <div class="hp-slots" id="hps-m"></div>
+    </div>
+    <div class="hp-section" id="hps-acc-section" style="display:none;">
+      <div class="hp-sep"></div>
+      <div class="hp-label" style="color:rgba(160,112,208,0.7);">공범</div>
+      <div class="hp-slots" id="hps-a"></div>
+    </div>
+  </div>
+
   <!-- BOARD -->
   <div class="board-body">
-    <!-- LEFT -->
     <div class="card-area" id="card-area">
       <div class="row-section">
         <div class="row-header"><div class="row-type-dot dot-s"></div>용의자 CRIMINAL</div>
@@ -554,32 +520,11 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
         <div class="row-header"><div class="row-type-dot dot-m"></div>동기 MOTIVE</div>
         <div class="card-row" id="motive-row"></div>
       </div>
-      <!-- acc row - hidden unless acc game -->
       <div class="row-section" id="acc-row-section" style="display:none;">
         <div class="row-header"><div class="row-type-dot dot-a"></div>공범 ACCOMPLICE</div>
         <div class="card-row" id="acc-row"></div>
       </div>
       <div style="height:130px;"></div>
-    </div>
-
-    <!-- RIGHT: hint panel -->
-    <div class="hint-panel" id="hint-panel">
-      <div class="hp-section">
-        <div class="hp-label">용의자 힌트</div>
-        <div class="hp-slots" id="hps-s"></div>
-      </div>
-      <div class="hp-section">
-        <div class="hp-label">도구 힌트</div>
-        <div class="hp-slots" id="hps-t"></div>
-      </div>
-      <div class="hp-section">
-        <div class="hp-label">동기 힌트</div>
-        <div class="hp-slots" id="hps-m"></div>
-      </div>
-      <div class="hp-section" id="hps-acc-section" style="display:none;">
-        <div class="hp-label" style="color:rgba(160,112,208,0.7);">공범 힌트</div>
-        <div class="hp-slots" id="hps-a"></div>
-      </div>
     </div>
   </div>
 
@@ -635,7 +580,6 @@ const EMOJIS={
 };
 
 let G={};
-let EDITION='base'; // 'base' | 'big'
 
 // ══════ HELPERS ══════
 function shuffle(a){let b=[...a];for(let i=b.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
@@ -643,12 +587,6 @@ function pick(a,n){return shuffle(a).slice(0,n);}
 function showScr(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 
 // ══════ TITLE ══════
-function selEdition(ed){
-  EDITION=ed;
-  document.getElementById('edt-base').classList.toggle('sel',ed==='base');
-  document.getElementById('edt-big').classList.toggle('sel',ed==='big');
-}
-
 function selP(n){
   G.pc=n;
   document.querySelectorAll('.pbtn').forEach(b=>{b.classList.toggle('sel',parseInt(b.textContent)===n);});
@@ -684,12 +622,12 @@ function startGame(){
   G.useAcc=n>=4;
   G.roles=shuffle(getRoles(n));
   G.ri=0;
-  G.edition=EDITION;
+  G.edition='big';
 
-  // 에디션에 따라 카드 풀 결정
-  const suspectPool = EDITION==='big' ? [...SUSPECTS_BASE,...SUSPECTS_BIG] : SUSPECTS_BASE;
-  const toolPool    = EDITION==='big' ? [...TOOLS_BASE,...TOOLS_BIG]       : TOOLS_BASE;
-  const motivePool  = EDITION==='big' ? [...MOTIVES_BASE,...MOTIVES_BIG]   : MOTIVES_BASE;
+  // 항상 빅박스 전체 풀 사용
+  const suspectPool=[...SUSPECTS_BASE,...SUSPECTS_BIG];
+  const toolPool   =[...TOOLS_BASE,...TOOLS_BIG];
+  const motivePool =[...MOTIVES_BASE,...MOTIVES_BIG];
 
   // 게임당 9장씩 사용
   const sus=pick(suspectPool,9),tls=pick(toolPool,9),mts=pick(motivePool,9);
@@ -914,15 +852,14 @@ function renderHintSlots(id,hints,type){
   const el=document.getElementById(id);
   if(!el)return;
   const isAcc=type==='a';
-  // max 4 pairs per category (= 8 tiles total)
-  let html='';
   const max=4;
+  let html='';
   for(let i=0;i<max;i++){
     const h=hints[i];
     if(h){
       html+=`<div class="hp-slot${isAcc?' acc':''} filled">${h.adj} · ${h.noun}</div>`;
     } else {
-      html+=`<div class="hp-slot${isAcc?' acc':''}">— 슬롯 ${i+1}</div>`;
+      html+=`<div class="hp-slot empty">·</div>`;
     }
   }
   el.innerHTML=html;
@@ -1027,20 +964,25 @@ function submitExclude(){
     const remS=G.sus.filter(c=>!G.elimS.includes(c)).length;
     const remT=G.tls.filter(c=>!G.elimT.includes(c)).length;
     const remM=G.mts.filter(c=>!G.elimM.includes(c)).length;
+    const remTotal=remS+remT+remM;
 
-    // 3라운드 또는 각 행 남은 카드 9 이하면 최종 추리
-    if(G.round>=3||(remS+remT+remM<=9)){
+    // 룰북 기준: 남은 카드가 9장이 되면 최종 추리
+    if(remTotal<=9){
       G.phase='deduce';
       G.deduceTokens={s:null,t:null,m:null};
       renderAll();
-      showModal('✅','제외 성공!',`훌륭합니다! 카드를 제거했습니다.\n\n이제 최종 추리를 시작합니다.\n각 카테고리에서 범인·도구·동기를 선택하세요.`,[{l:'최종 추리 시작',c:'btn-gold',a:'close'}]);
+      showModal('✅','제외 성공!',
+        `카드가 ${remTotal}장 남았습니다.\n(용의자 ${remS} / 도구 ${remT} / 동기 ${remM})\n\n이제 최종 추리를 시작합니다!\n범인, 살해 도구, 살해 동기를 선택하세요.`,
+        [{l:'최종 추리 시작',c:'btn-gold',a:'close'}]);
     } else {
-      // 다음 라운드 힌트 추가
+      // 아직 9장 초과 — 다음 라운드 힌트 추가
       G.round++;
       G.phase='hint';
       addBonusTiles();
       renderAll();
-      showModal('✅','제외 성공!',`제외된 카드들이 탈락했습니다!\n\n소설가가 추가 힌트를 배치합니다.\n${G.round}라운드 힌트를 확인하세요.`,[{l:'계속',c:'btn-gold',a:'close'}]);
+      showModal('✅','제외 성공!',
+        `카드가 제거됐습니다!\n남은 카드: ${remTotal}장 (용의자 ${remS} / 도구 ${remT} / 동기 ${remM})\n\n소설가가 추가 힌트를 배치합니다.\n${G.round}라운드 힌트를 확인하세요.`,
+        [{l:'계속',c:'btn-gold',a:'close'}]);
     }
   }
 }
@@ -1198,10 +1140,7 @@ function mAct(a){
   if(a==='close')return;
   if(a==='restart'){
     G={};
-    EDITION='base';
     document.querySelectorAll('.pbtn').forEach(b=>b.classList.remove('sel'));
-    document.getElementById('edt-base').classList.add('sel');
-    document.getElementById('edt-big').classList.remove('sel');
     document.getElementById('sbtn').classList.remove('ready');
     document.getElementById('role-preview').style.display='none';
     document.getElementById('acc-notice').style.display='none';
