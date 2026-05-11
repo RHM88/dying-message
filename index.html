@@ -727,13 +727,13 @@ function buildCardViewer(){
     baseList.forEach(n=>{
       const chip=document.createElement('span');
       chip.className='cv-chip';
-      chip.innerHTML=`<span class="cv-emoji">${emojiMap[n]||'•'}</span>${n}`;
+      chip.innerHTML=`${makeImageHTML(cat,n,emojiMap[n])}<span>${n}</span>`;
       el.appendChild(chip);
     });
     bigList.forEach(n=>{
       const chip=document.createElement('span');
       chip.className='cv-chip big';
-      chip.innerHTML=`<span class="cv-emoji">${emojiMap[n]||'•'}</span>${n}`;
+      chip.innerHTML=`${makeImageHTML(cat,n,emojiMap[n])}<span>${n}</span>`;
       el.appendChild(chip);
     });
   };
@@ -1412,6 +1412,60 @@ function renderChip(card){
   `;
 }
 /* === END IMAGE MAPPING SYSTEM === */
+
+
+/* === IMAGE HELPERS === */
+const IMAGE_PATHS = {
+  suspect: "images/suspect/",
+  tool: "images/tool/",
+  motive: "images/motive/",
+  adj: "images/adj/",
+  noun: "images/noun/"
+};
+
+function normalizeCardFileName(name){
+  return String(name || '').replace(/\s+/g,'');
+}
+
+function getCardImageByCategory(category, name){
+  if(!category || !name) return null;
+
+  if(category === '형용사'){
+    return 'images/adj/bg.png';
+  }
+
+  if(category === '명사'){
+    return 'images/noun/bg.png';
+  }
+
+  const map = {
+    '용의자':'suspect',
+    '도구':'tool',
+    '동기':'motive'
+  };
+
+  const folder = map[category];
+  if(!folder) return null;
+
+  return `images/${folder}/${normalizeCardFileName(name)}.png`;
+}
+
+function makeImageHTML(category, name, emoji){
+  const src = getCardImageByCategory(category, name);
+
+  if(!src){
+    return `<span class="cv-emoji">${emoji||'•'}</span>`;
+  }
+
+  return `
+    <img
+      src="${src}"
+      alt="${name}"
+      onerror="this.outerHTML='<span class=&quot;cv-emoji&quot;>${emoji||'•'}</span>';"
+    />
+  `;
+}
+/* === END IMAGE HELPERS === */
 
 </script>
 </body>
