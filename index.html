@@ -247,8 +247,29 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 .gcard.ans-correct{border-color:#50e090;}
 
 .gcard-art{
-  height:56px;display:flex;align-items:center;justify-content:center;
-  font-size:26px;background:rgba(0,0,0,0.25);position:relative;
+  height:56px;
+  background:rgba(0,0,0,0.25);
+  position:relative;
+  overflow:hidden;
+}
+
+.gcard-image{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.gcard-fallback{
+  position:absolute;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+
+.gcard-emoji{
+  font-size:26px;
 }
 .gcard-badge{
   position:absolute;top:3px;right:3px;font-size:6px;padding:1px 4px;
@@ -1017,11 +1038,37 @@ function renderRow(rowId,cards,elim,type){
 
     const d=document.createElement('div');
     d.className=cls;
+    const imageTypeMap = {
+      s:'suspect',
+      t:'tool',
+      m:'motive'
+    };
+
+    const imageSrc = getCardImage({
+      type:imageTypeMap[type],
+      name:card
+    });
+
     d.innerHTML=`
       <div class="gcard-art">
-        <span>${EMOJIS[card]||'?'}</span>
+
+        <img
+          src="${imageSrc}"
+          class="gcard-image"
+          alt="${card}"
+          onerror="
+            this.style.display='none';
+            this.nextElementSibling.style.display='flex';
+          "
+        />
+
+        <div class="gcard-fallback">
+          <span class="gcard-emoji">${EMOJIS[card]||'?'}</span>
+        </div>
+
         <div class="gcard-badge ${badgeCls}">${typeLabel}</div>
       </div>
+
       <div class="gcard-name">${card}</div>
       ${hintsHtml}
       ${tokHtml}
@@ -1360,6 +1407,10 @@ const IMAGE_PATHS = {
   noun: "images/noun/"
 };
 
+function normalizeCardFileName(name){
+  return String(name || '').replace(/\s+/g,'');
+}
+
 function getCardImage(card) {
   if (!card || !card.type || !card.name) return null;
 
@@ -1374,7 +1425,7 @@ function getCardImage(card) {
   const basePath = IMAGE_PATHS[card.type];
   if (!basePath) return null;
 
-  return `${basePath}${card.name}.png`;
+  return `${basePath}${normalizeCardFileName(card.name)}.png`;
 }
 
 function renderCardContent(card) {
