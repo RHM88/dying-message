@@ -51,31 +51,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 
 .setup-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;width:100%;max-width:400px;display:flex;flex-direction:column;gap:20px;}
 .setup-label{font-size:10px;letter-spacing:3px;color:var(--text3);text-align:center;}
-
-  /* ── 카드 뷰어 ── */
-  .cv-toggle{background:none;border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:11px;color:var(--text2);cursor:pointer;letter-spacing:1px;display:flex;align-items:center;gap:6px;margin:0 auto;transition:all .2s;}
-  .cv-toggle:hover{border-color:var(--gold);color:var(--gold);}
-  .cv-panel{display:none;flex-direction:column;gap:14px;animation:fadeIn .25s ease;}
-  .cv-panel.open{display:flex;}
-  @keyframes fadeIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
-  .cv-tabs{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;}
-  .cv-tab{background:none;border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:10px;letter-spacing:1px;color:var(--text2);cursor:pointer;transition:all .2s;}
-  .cv-tab.active{background:var(--gold);border-color:var(--gold);color:#000;font-weight:700;}
-  .cv-content{display:none;}
-  .cv-content.active{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-height:240px;overflow-y:auto;padding:4px 2px;}
-  .cv-content::-webkit-scrollbar{width:4px;}
-  .cv-content::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
-  .cv-chip{display:inline-flex;align-items:center;gap:5px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:11px;color:var(--text);white-space:nowrap;}
-  .cv-chip .cv-emoji{font-size:13px;}
-  .cv-chip.big{border-color:rgba(90,159,212,0.4);background:rgba(90,159,212,0.07);}
-  .cv-chip.tile-adj{border-color:rgba(80,200,120,0.3);background:rgba(80,200,120,0.06);font-size:10px;color:var(--text2);}
-  .cv-chip.tile-noun{border-color:rgba(200,100,100,0.3);background:rgba(200,100,100,0.06);font-size:10px;color:var(--text2);}
-  .cv-legend{display:flex;gap:10px;justify-content:center;font-size:9px;color:var(--text3);flex-wrap:wrap;margin-top:-4px;}
-  .cv-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:3px;vertical-align:middle;}
-  .cv-dot.base{background:rgba(200,169,110,0.6);}
-  .cv-dot.big{background:rgba(90,159,212,0.6);}
-  .cv-dot.adj{background:rgba(80,200,120,0.6);}
-  .cv-dot.noun{background:rgba(200,100,100,0.6);}
 .player-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
 .pbtn{
   aspect-ratio:1;border:1px solid var(--border);border-radius:10px;
@@ -210,7 +185,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 /* token states */
 .gcard.has-exclude{border-color:var(--red);box-shadow:0 0 10px rgba(208,64,64,0.3);}
 .gcard.has-deduce{border-color:var(--gold);box-shadow:0 0 10px rgba(200,169,110,0.3);}
-.gcard.sel-exclude{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold),0 0 12px rgba(200,169,110,0.4);}
 .gcard.selected{border-color:#fff;box-shadow:0 0 14px rgba(255,255,255,0.2);}
 .gcard.ans-correct{border-color:#50e090;}
 
@@ -481,34 +455,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
     <div id="acc-notice" style="display:none;font-size:10px;color:var(--purple);text-align:center;line-height:1.7;padding:10px;border-radius:8px;background:rgba(160,112,208,0.08);border:1px solid rgba(160,112,208,0.2);">
       🕶️ 4인 이상 — <strong>공범의 그림자</strong> 확장 규칙 적용<br>공범은 탐정들의 추리를 방해합니다
     </div>
-
-    <!-- 카드 뷰어 -->
-    <div>
-      <button class="cv-toggle" id="cv-toggle-btn" onclick="toggleCardViewer()">
-        🃏 <span id="cv-toggle-text">카드 목록 보기</span>
-      </button>
-      <div class="cv-panel" id="cv-panel">
-        <div class="cv-tabs">
-          <button class="cv-tab active" onclick="cvTab('suspect')">용의자</button>
-          <button class="cv-tab" onclick="cvTab('tool')">도구</button>
-          <button class="cv-tab" onclick="cvTab('motive')">동기</button>
-          <button class="cv-tab" onclick="cvTab('adj')">형용사</button>
-          <button class="cv-tab" onclick="cvTab('noun')">명사</button>
-        </div>
-        <div class="cv-legend">
-          <span><span class="cv-dot base"></span>기본판</span>
-          <span><span class="cv-dot big"></span>빅박스 추가</span>
-          <span><span class="cv-dot adj"></span>형용사 타일</span>
-          <span><span class="cv-dot noun"></span>명사 타일</span>
-        </div>
-        <div class="cv-content active" id="cv-suspect"></div>
-        <div class="cv-content" id="cv-tool"></div>
-        <div class="cv-content" id="cv-motive"></div>
-        <div class="cv-content" id="cv-adj"></div>
-        <div class="cv-content" id="cv-noun"></div>
-      </div>
-    </div>
-
     <button class="start-btn" id="sbtn" onclick="startGame()">게임 시작 →</button>
   </div>
   <div style="font-size:10px;color:var(--text3);text-align:center;line-height:1.8;">
@@ -603,102 +549,37 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 <script>
 // ══════ DATA ══════
 // ── 기본판 카드 풀 ──
-const SUSPECTS_BASE=['모델','음악가','바텐더','요리사','경찰','과학자','복서','마약상','시인','영화감독','건축가','미용사','의사','사기꾼','가수','군인','화가','야구선수','신문기자','아이돌','살인마','변호사','경호원','간호사','교사','탐험가','깡패','정치인','외교관','트레이너','작곡가','유튜버','수영선수','배우','농부','정비사'];
-const TOOLS_BASE=['하이힐','독버섯','망치','폭탄','케이블','넥타이','손도끼','트로피','벽돌','줄넘기','화분','가방','휴지통','곰인형','세탁기','냉장고','변기','코트','쇼핑백','베개','가위','권총','식칼','시계','만년필','립스틱','담배','손전등','우산','주전자','드릴','휘발유','뱀','고춧가루','햄버거','수면제'];
-const MOTIVES_BASE=['협박','재미','빚','불륜','시기','유산','배신','스토킹','강도','과음','층간소음','청부살인','마약중독','이간질','욕설','도박','집착','식탐'];
+const SUSPECTS_BASE=['모델','음악가','바텐더','요리사','경찰','과학자','복서','마약상','시인','영화감독','건축가','미용사','의사','사기꾼','가수','군인','화가','야구선수','신문기자','아이돌','살인자','변호사','경호원'];
+const TOOLS_BASE=['하이힐','독버섯','망치','폭탄','케이블','넥타이','손도끼','트로피','벽돌','줄넘기','화분','가방','휴지통','곰인형','세탁기','냉장고','변기','코트','쇼핑백','베개','가위','권총','식칼'];
+const MOTIVES_BASE=['시기','유산','배신','스토킹','원한','질투','복수','탐욕','협박'];
 
 // ── 빅박스 추가 카드 (이미지 분석 기준) ──
-const SUSPECTS_BIG=['우주비행사','간첩','무당','고고학자','귀신','프로레슬러','노숙자','게이샤','도둑','양봉업자','공인중개사'];
-const TOOLS_BIG=['단두대','문어','말벌','복어','땅콩잼','자동차','두리안','면도기','홍차','조각품','장미'];
-const MOTIVES_BIG=['중고 사기','잔소리','반찬투정','뺑소니','코골이'];
+const SUSPECTS_BIG=['우주비행사','건달','무당','고고학자','귀신','프로레슬러','노숙자','게이샤','도둑','양봉업자','공인중개사'];
+const TOOLS_BIG=['단두대','꼴뚜기','말벌','복어','땅콩잼','자동차','두리안','전기면도기','홍차','조각품','장미'];
+const MOTIVES_BIG=['동고시기','간소리','반란무명','별소나','쾌감'];
 
 // ── 활성 카드 풀 (에디션에 따라 결정) ──
 let SUSPECTS=[...SUSPECTS_BASE];
 let TOOLS=[...TOOLS_BASE];
 let MOTIVES=[...MOTIVES_BASE];
-const ADJ=['뜨거운','차가운','빠른','느린','복잡한','단순한','높은','낮은','무거운','가벼운','부드러운','딱딱한','많은','적은','똑똑한','멍청한','익숙한','낯선','차분한','아름다운','조용한','시끄러운','친절한','투명한','예술적인','계산적인','큰','작은','비싼','저렴한','얇은','두꺼운','어두운','밝은','오래된','새로운','외로운','냄새나는','긴','짧은','이기적인','답답한','숙련된','더러운','징그러운','수줍은','세심한','치사한','거친','소심한','두려운','화려한','달콤한','날카로운','넓은','사각형의',
-  // 빅박스 추가
-  '마른','젖은','닮은','변치않는','힘든','속상한','부끄러운','야한','겸손한','긴장된'];
-const NOUN=['홀수','진동','고통','생활','짝수','갈증','공간','밤','달','원','시간','낮','여름','삼각형','약속','관계','겨울','사각형','기술','접촉','금속','열정','머리','질서','나무','냉정','팔','맛','꽃','곡선','다리','압박','속도','직선','몸','자유','별','소음','눈','입','바다','믿음','대화','땅','감정','진심','말','반복','피로','걱정','하루','습관','얼굴',
-  // 빅박스 추가
-  '두쫀쿠','휴일','어둠','영웅','온도','코스피','충격','욕구','라이브','틱톡'];
+const ADJ=['두꺼운','징그러운','수줍은','세심한','치사한','거친','소심한','두려운','빠른','느린','화려한','단순한','가벼운','복잡한','달콤한','날카로운','부드러운','긴','짧은','넓은','높은','낮은','뜨거운','차가운','어두운','밝은','숙련된','답답한','사각형의','적은'];
+const NOUN=['생활','관계','나무','꽃','금속','바다','시간','달','겨울','혈액','도시','그림자','기억','거울','불꽃','바람','밤','눈물','침묵','사랑','돈','권력','비밀','공포','희망','자유','운명','계절','빛','소리'];
 const EMOJIS={
   // 기본판 용의자
-  모델:'💃',음악가:'🎸',바텐더:'🍸',요리사:'👨‍🍳',경찰:'👮',과학자:'🔬',복서:'🥊',마약상:'💊',시인:'✒️',영화감독:'🎬',건축가:'📐',미용사:'✂️',의사:'🩺',사기꾼:'🃏',가수:'🎤',군인:'🪖',화가:'🎨',야구선수:'⚾',신문기자:'📰',아이돌:'⭐',살인마:'🗡️',변호사:'⚖️',경호원:'🕶️',간호사:'💉',교사:'📚',탐험가:'🧭',깡패:'😈',정치인:'🏛️',외교관:'🤝',트레이너:'🏋️',작곡가:'🎼',유튜버:'📹',수영선수:'🏊',배우:'🎭',농부:'🌾',정비사:'🔧',
+  모델:'💃',음악가:'🎸',바텐더:'🍸',요리사:'👨‍🍳',경찰:'👮',과학자:'🔬',복서:'🥊',마약상:'💊',시인:'✒️',영화감독:'🎬',건축가:'📐',미용사:'✂️',의사:'🩺',사기꾼:'🃏',가수:'🎤',군인:'🪖',화가:'🎨',야구선수:'⚾',신문기자:'📰',아이돌:'⭐',살인자:'🗡️',변호사:'⚖️',경호원:'🕶️',
   // 빅박스 추가 용의자
-  우주비행사:'🚀',간첩:'🕵️',무당:'🔮',고고학자:'🏺',귀신:'👻',프로레슬러:'🤼',노숙자:'🏚️',게이샤:'🎎',도둑:'🦹',양봉업자:'🐝',공인중개사:'🏠',
+  우주비행사:'🚀',건달:'😎',무당:'🔮',고고학자:'🏺',귀신:'👻',프로레슬러:'🤼',노숙자:'🏚️',게이샤:'🎎',도둑:'🦹',양봉업자:'🐝',공인중개사:'🏠',
   // 기본판 도구
-  하이힐:'👠',독버섯:'🍄',망치:'🔨',폭탄:'💣',케이블:'🔌',넥타이:'👔',손도끼:'🪓',트로피:'🏆',벽돌:'🧱',줄넘기:'🪢',화분:'🌿',가방:'🎒',휴지통:'🗑️',곰인형:'🧸',세탁기:'🫧',냉장고:'🧊',변기:'🚽',코트:'🧥',쇼핑백:'🛍️',베개:'🛏️',가위:'✂️',권총:'🔫',식칼:'🔪',시계:'⏰',만년필:'🖊️',립스틱:'💄',담배:'🚬',손전등:'🔦',우산:'☂️',주전자:'🫖',드릴:'🔩',휘발유:'⛽',뱀:'🐍',고춧가루:'🌶️',햄버거:'🍔',수면제:'💊',
+  하이힐:'👠',독버섯:'🍄',망치:'🔨',폭탄:'💣',케이블:'🔌',넥타이:'👔',손도끼:'🪓',트로피:'🏆',벽돌:'🧱',줄넘기:'🪢',화분:'🌿',가방:'🎒',휴지통:'🗑️',곰인형:'🧸',세탁기:'🫧',냉장고:'🧊',변기:'🚽',코트:'🧥',쇼핑백:'🛍️',베개:'🛏️',가위:'✂️',권총:'🔫',식칼:'🔪',
   // 빅박스 추가 도구
-  단두대:'⚔️',문어:'🐙',말벌:'🐝',복어:'🐡',땅콩잼:'🫙',자동차:'🚗',두리안:'🌵',면도기:'🪒',홍차:'🍵',조각품:'🗿',장미:'🌹',
+  단두대:'⚔️',꼴뚜기:'🦑',말벌:'🐝',복어:'🐡',땅콩잼:'🫙',자동차:'🚗',두리안:'🌵',전기면도기:'🪒',홍차:'🍵',조각품:'🗿',장미:'🌹',
   // 기본판 동기
-  협박:'📨',재미:'😂',빚:'💸',불륜:'💏',시기:'😒',유산:'💰',배신:'💔',스토킹:'👀',강도:'🔪',과음:'🍺',층간소음:'🔊',청부살인:'💼',마약중독:'💉',이간질:'🗣️',욕설:'💢',도박:'🎰',집착:'🔗',식탐:'🍽️',
+  시기:'😒',유산:'💰',배신:'💔',스토킹:'👀',원한:'😤',질투:'💚',복수:'⚡',탐욕:'💵',협박:'📨',
   // 빅박스 추가 동기
-  '중고 사기':'🛒',잔소리:'📢',반찬투정:'🍱',뺑소니:'🚗',코골이:'😴'
+  동고시기:'😈',간소리:'📢',반란무명:'🗡️',별소나:'🌑',쾌감:'😏'
 };
 
 let G={};
-
-// ══════ CARD VIEWER ══════
-function buildCardViewer(){
-  const render=(ids,baseList,bigList,cls,emojiMap)=>{
-    const el=document.getElementById(ids);
-    if(!el)return;
-    el.innerHTML='';
-    baseList.forEach(n=>{
-      const chip=document.createElement('span');
-      chip.className='cv-chip';
-      chip.innerHTML=`<span class="cv-emoji">${emojiMap[n]||'•'}</span>${n}`;
-      el.appendChild(chip);
-    });
-    bigList.forEach(n=>{
-      const chip=document.createElement('span');
-      chip.className='cv-chip big';
-      chip.innerHTML=`<span class="cv-emoji">${emojiMap[n]||'•'}</span>${n}`;
-      el.appendChild(chip);
-    });
-  };
-  render('cv-suspect',SUSPECTS_BASE,SUSPECTS_BIG,'',EMOJIS);
-  render('cv-tool',TOOLS_BASE,TOOLS_BIG,'',EMOJIS);
-  render('cv-motive',MOTIVES_BASE,MOTIVES_BIG,'',EMOJIS);
-
-  // 형용사 타일 (기본판 30개 + 빅박스 10개)
-  const adjBase=ADJ.slice(0,30);
-  const adjBig=ADJ.slice(30);
-  const adjEl=document.getElementById('cv-adj');
-  if(adjEl){
-    adjEl.innerHTML='';
-    adjBase.forEach(w=>{const c=document.createElement('span');c.className='cv-chip tile-adj';c.textContent=w;adjEl.appendChild(c);});
-    adjBig.forEach(w=>{const c=document.createElement('span');c.className='cv-chip tile-adj big';c.style.borderColor='rgba(90,159,212,0.4)';c.textContent=w;adjEl.appendChild(c);});
-  }
-
-  // 명사 타일 (기본판 30개 + 빅박스 10개)
-  const nounBase=NOUN.slice(0,30);
-  const nounBig=NOUN.slice(30);
-  const nounEl=document.getElementById('cv-noun');
-  if(nounEl){
-    nounEl.innerHTML='';
-    nounBase.forEach(w=>{const c=document.createElement('span');c.className='cv-chip tile-noun';c.textContent=w;nounEl.appendChild(c);});
-    nounBig.forEach(w=>{const c=document.createElement('span');c.className='cv-chip tile-noun big';c.style.borderColor='rgba(90,159,212,0.4)';c.textContent=w;nounEl.appendChild(c);});
-  }
-}
-
-function toggleCardViewer(){
-  const panel=document.getElementById('cv-panel');
-  const txt=document.getElementById('cv-toggle-text');
-  const isOpen=panel.classList.toggle('open');
-  txt.textContent=isOpen?'카드 목록 닫기':'카드 목록 보기';
-  if(isOpen) buildCardViewer();
-}
-
-function cvTab(type){
-  document.querySelectorAll('.cv-tab').forEach((t,i)=>{
-    const types=['suspect','tool','motive','adj','noun'];
-    t.classList.toggle('active',types[i]===type);
-  });
-  document.querySelectorAll('.cv-content').forEach(c=>c.classList.remove('active'));
-  document.getElementById('cv-'+type).classList.add('active');
-};
 
 // ══════ HELPERS ══════
 function shuffle(a){let b=[...a];for(let i=b.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
@@ -990,18 +871,22 @@ function renderHintSlots(id,hints,type){
 // ══════ CARD CLICK ══════
 function onCardClick(card,type){
   if(G.phase==='hint'){
+    // 소설가가 힌트 배치할 카드 선택 (카드 행을 선택하는 것과 동일)
     G.selHintTarget=type;
     renderBottomPanel();
   } else if(G.phase==='exclude'){
+    // 탐정이 [제외] 토큰 배치
     const cur=G.excludeTokens[type][card]||0;
     const total=countTotalExclude();
     if(cur>0){
+      // 이미 있으면 제거
       G.excludeTokens[type][card]=0;
     } else if(total<6){
       G.excludeTokens[type][card]=1;
     }
-    renderCards();renderBottomPanel();
+    renderCards();renderHeader();renderBottomPanel();
   } else if(G.phase==='deduce'){
+    // [추리] 토큰 배치 — 카테고리당 1개
     G.deduceTokens[type]=G.deduceTokens[type]===card?null:card;
     renderCards();renderBottomPanel();
   }
@@ -1044,7 +929,7 @@ function endHintPhase(){
   G.excludeTokens={s:{},t:{},m:{}};
   renderAll();
   showModal('🔍','탐정들에게',
-    '소설가의 힌트 배치가 완료됐습니다!\n<strong>소설가는 이제 화면을 탐정에게 넘겨주세요.</strong>\n\n─────────────────\n\n탐정들은 힌트를 분석해\n관련 없다고 생각되는 카드를 클릭해\n<strong>[제외] 토큰 6개</strong>를 배치하세요.\n\n⚠️ 정답 카드가 포함되면 실패입니다!',
+    '소설가의 힌트 배치가 완료됐습니다!\n<strong>소설가는 이제 화면을 탐정에게 넘겨주세요.</strong>\n\n─────────────────\n\n탐정들은 힌트를 분석해\n관련 없다고 생각되는 카드에\n<strong>[제외] 토큰 6개</strong>를 배치하세요.\n\n⚠️ 정답 카드가 포함되면 실패입니다!',
     [{l:'추리 시작!',c:'btn-gold',a:'close'}]);
 }
 
@@ -1212,10 +1097,12 @@ function renderBottomPanel(){
     const total=countTotalExclude();
     bp.innerHTML=`
       <div class="bp-row">
-        <span class="bp-title">제외 토큰 배치</span>
-        <span class="bp-msg">관련 없다고 생각되는 카드를 클릭하세요. 다시 클릭하면 취소됩니다.</span>
-        <span style="font-size:13px;color:var(--gold);font-weight:700;">${total} / 6</span>
-        <button class="btn btn-gold" onclick="submitExclude()" ${total===6?'':'disabled'}>제외 확정 →</button>
+        <span class="bp-msg">
+          관련 없다고 생각되는 카드를 클릭해 <strong>[제외] 토큰</strong>을 배치하세요.
+          정답 카드를 포함하면 실패입니다!
+        </span>
+        <span style="font-size:12px;color:var(--gold);font-weight:700;">${total} / 6</span>
+        <button class="btn btn-gold" onclick="submitExclude()" ${total===6?'':'disabled'}>제외 확정</button>
       </div>
     `;
 
