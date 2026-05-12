@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>DYING MESSAGE — 소설가의 마지막 문장</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
@@ -249,6 +249,91 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 .gcard-art{
   height:56px;display:flex;align-items:center;justify-content:center;
   font-size:26px;background:rgba(0,0,0,0.25);position:relative;
+  overflow:hidden;
+}
+.gcard-art img.card-img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;display:block;
+}
+.gcard-art .card-fb{
+  position:relative;z-index:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:2px;
+  width:100%;height:100%;
+}
+
+/* ── 힌트 타일 (형용사/명사) ── */
+.hint-tile{
+  display:inline-flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+  border-radius:6px;padding:0;
+  min-width:52px;height:26px;
+}
+.hint-tile img.tile-bg{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;display:block;
+}
+.hint-tile .tile-text{
+  position:relative;z-index:1;
+  font-size:10px;font-weight:700;
+  letter-spacing:0.03em;
+  text-shadow:0 1px 3px rgba(0,0,0,0.7);
+  padding:0 6px;white-space:nowrap;
+}
+.hint-tile.adj .tile-text{
+  font-family:'Noto Sans KR',sans-serif;
+  color:#7ec8ff;
+}
+.hint-tile.noun .tile-text{
+  font-family:'Nanum Myeongjo',serif;
+  color:#ffaaaa;
+}
+
+/* ── cv-chip 이미지 ── */
+.cv-chip-img{
+  width:32px;height:40px;border-radius:4px;
+  object-fit:cover;display:block;flex-shrink:0;
+}
+.cv-chip-fb{
+  width:32px;height:40px;border-radius:4px;
+  background:var(--surface2);display:flex;align-items:center;
+  justify-content:center;font-size:18px;flex-shrink:0;
+}
+.cv-chip{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;padding:5px 10px 5px 5px;
+  font-size:11px;color:var(--text);white-space:nowrap;
+}
+.cv-chip.big{border-color:rgba(90,159,212,0.4);background:rgba(90,159,212,0.07);}
+
+/* ── cv-chip 타일형 (형용사/명사) ── */
+.cv-chip.tile-adj,.cv-chip.tile-noun{
+  position:relative;overflow:hidden;
+  width:72px;height:40px;
+  border-radius:8px;padding:0;
+  justify-content:center;align-items:center;
+  border:none;background:var(--surface2);
+}
+.cv-chip.tile-adj img.tile-bg,
+.cv-chip.tile-noun img.tile-bg{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;
+}
+.cv-chip.tile-adj .tile-text{
+  position:relative;z-index:1;
+  font-family:'Noto Sans KR',sans-serif;
+  font-weight:700;font-size:10px;
+  color:#7ec8ff;
+  text-shadow:0 1px 3px rgba(0,0,0,0.8);
+  letter-spacing:0.05em;
+}
+.cv-chip.tile-noun .tile-text{
+  position:relative;z-index:1;
+  font-family:'Nanum Myeongjo',serif;
+  font-weight:700;font-size:10px;
+  color:#ffaaaa;
+  text-shadow:0 1px 3px rgba(0,0,0,0.8);
+  letter-spacing:0.05em;
 }
 .gcard-badge{
   position:absolute;top:3px;right:3px;font-size:6px;padding:1px 4px;
@@ -677,47 +762,99 @@ const EMOJIS={
 
 let G={};
 
+// ══════ IMAGE HELPERS ══════
+const CAT_FOLDER={s:'suspect',t:'tool',m:'motive'};
+
+function getCardImg(name, catKey){
+  // catKey: 's'|'t'|'m'  or  folder name 'suspect'|'tool'|'motive'
+  const folder = CAT_FOLDER[catKey] || catKey;
+  return `images/${folder}/${name}.png`;
+}
+
+function cardImgEl(name, catKey, w, h){
+  // w/h in px — returns <img> that falls back to null on error
+  const img = document.createElement('img');
+  img.className = 'card-img';
+  img.src = getCardImg(name, catKey);
+  img.alt = name;
+  img.width = w; img.height = h;
+  img.onerror = function(){ this.style.display='none'; };
+  return img;
+}
+
+function tileImgEl(type){
+  // type: 'adj' | 'noun'
+  const img = document.createElement('img');
+  img.className = 'tile-bg';
+  img.src = `images/${type}/bg.png`;
+  img.alt = '';
+  img.onerror = function(){ this.style.display='none'; };
+  return img;
+}
+
 // ══════ CARD VIEWER ══════
 function buildCardViewer(){
-  const render=(ids,baseList,bigList,cls,emojiMap)=>{
-    const el=document.getElementById(ids);
+  // 용의자/도구/동기 — 이미지 + fallback 이모지
+  const renderCards=(elId, baseList, bigList, folder, emojiMap)=>{
+    const el=document.getElementById(elId);
     if(!el)return;
     el.innerHTML='';
-    baseList.forEach(n=>{
-      const chip=document.createElement('span');
-      chip.className='cv-chip';
-      chip.innerHTML=`<span class="cv-emoji">${emojiMap[n]||'•'}</span>${n}`;
+    const makeChip=(name,isBig)=>{
+      const chip=document.createElement('div');
+      chip.className='cv-chip'+(isBig?' big':'');
+      // 이미지
+      const img=document.createElement('img');
+      img.className='cv-chip-img';
+      img.src=`images/${folder}/${name}.png`;
+      img.alt=name;
+      img.onerror=function(){
+        this.style.display='none';
+        fb.style.display='flex';
+      };
+      // fallback
+      const fb=document.createElement('div');
+      fb.className='cv-chip-fb';
+      fb.style.display='none';
+      fb.textContent=emojiMap[name]||'?';
+      chip.appendChild(img);
+      chip.appendChild(fb);
+      const label=document.createElement('span');
+      label.textContent=name;
+      chip.appendChild(label);
       el.appendChild(chip);
-    });
-    bigList.forEach(n=>{
-      const chip=document.createElement('span');
-      chip.className='cv-chip big';
-      chip.innerHTML=`<span class="cv-emoji">${emojiMap[n]||'•'}</span>${n}`;
-      el.appendChild(chip);
-    });
+    };
+    baseList.forEach(n=>makeChip(n,false));
+    bigList.forEach(n=>makeChip(n,true));
   };
-  render('cv-suspect',SUSPECTS_BASE,SUSPECTS_BIG,'',EMOJIS);
-  render('cv-tool',TOOLS_BASE,TOOLS_BIG,'',EMOJIS);
-  render('cv-motive',MOTIVES_BASE,MOTIVES_BIG,'',EMOJIS);
+  renderCards('cv-suspect',SUSPECTS_BASE,SUSPECTS_BIG,'suspect',EMOJIS);
+  renderCards('cv-tool',TOOLS_BASE,TOOLS_BIG,'tool',EMOJIS);
+  renderCards('cv-motive',MOTIVES_BASE,MOTIVES_BIG,'motive',EMOJIS);
 
-  // 형용사 타일 (기본판 30개 + 빅박스 10개)
-  const adjBase=ADJ.slice(0,30);
-  const adjBig=ADJ.slice(30);
+  // 형용사 타일 — bg.png 배경 + 텍스트
+  const makeTileChip=(word, type, isBig)=>{
+    const chip=document.createElement('div');
+    chip.className=`cv-chip tile-${type}`+(isBig?' big':'');
+    const bgImg=tileImgEl(type);
+    const txt=document.createElement('span');
+    txt.className='tile-text';
+    txt.textContent=word;
+    chip.appendChild(bgImg);
+    chip.appendChild(txt);
+    return chip;
+  };
+
   const adjEl=document.getElementById('cv-adj');
   if(adjEl){
     adjEl.innerHTML='';
-    adjBase.forEach(w=>{const c=document.createElement('span');c.className='cv-chip tile-adj';c.textContent=w;adjEl.appendChild(c);});
-    adjBig.forEach(w=>{const c=document.createElement('span');c.className='cv-chip tile-adj big';c.style.borderColor='rgba(90,159,212,0.4)';c.textContent=w;adjEl.appendChild(c);});
+    ADJ.slice(0,30).forEach(w=>adjEl.appendChild(makeTileChip(w,'adj',false)));
+    ADJ.slice(30).forEach(w=>adjEl.appendChild(makeTileChip(w,'adj',true)));
   }
 
-  // 명사 타일 (기본판 30개 + 빅박스 10개)
-  const nounBase=NOUN.slice(0,30);
-  const nounBig=NOUN.slice(30);
   const nounEl=document.getElementById('cv-noun');
   if(nounEl){
     nounEl.innerHTML='';
-    nounBase.forEach(w=>{const c=document.createElement('span');c.className='cv-chip tile-noun';c.textContent=w;nounEl.appendChild(c);});
-    nounBig.forEach(w=>{const c=document.createElement('span');c.className='cv-chip tile-noun big';c.style.borderColor='rgba(90,159,212,0.4)';c.textContent=w;nounEl.appendChild(c);});
+    NOUN.slice(0,30).forEach(w=>nounEl.appendChild(makeTileChip(w,'noun',false)));
+    NOUN.slice(30).forEach(w=>nounEl.appendChild(makeTileChip(w,'noun',true)));
   }
 }
 
@@ -976,15 +1113,21 @@ function renderRow(rowId,cards,elim,type){
 
     const d=document.createElement('div');
     d.className=cls;
-    d.innerHTML=`
-      <div class="gcard-art">
-        <span>${EMOJIS[card]||'?'}</span>
-        <div class="gcard-badge ${badgeCls}">${typeLabel}</div>
-      </div>
-      <div class="gcard-name">${card}</div>
-      ${hintsHtml}
-      ${tokHtml}
-    `;
+    // art div — image + fallback emoji
+    const artDiv=document.createElement('div');
+    artDiv.className='gcard-art';
+    const cImg=cardImgEl(card,type,80,56);
+    artDiv.appendChild(cImg);
+    const fbSpan=document.createElement('div');
+    fbSpan.className='card-fb';
+    fbSpan.innerHTML=`<span>${EMOJIS[card]||'?'}</span>`;
+    artDiv.appendChild(fbSpan);
+    const badge=document.createElement('div');
+    badge.className=`gcard-badge ${badgeCls}`;
+    badge.textContent=typeLabel;
+    artDiv.appendChild(badge);
+    d.appendChild(artDiv);
+    d.innerHTML+=`<div class="gcard-name">${card}</div>${hintsHtml}${tokHtml}`;
     if(clickable)d.onclick=()=>onCardClick(card,type);
     row.appendChild(d);
   });
