@@ -75,59 +75,51 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
   /* ── 카드 슬라이드 아이템 (용의자/도구/동기) ── */
   .cv-card-item{
     flex-shrink:0;scroll-snap-align:start;
-    display:flex;flex-direction:column;align-items:center;gap:0;
+    display:flex;flex-direction:column;align-items:center;gap:5px;
     cursor:pointer;
   }
   .cv-card-thumb{
-    width:88px;height:130px;border-radius:10px;overflow:hidden;
+    width:72px;height:96px;border-radius:8px;overflow:hidden;
     background:var(--surface2);border:1px solid var(--border);
     position:relative;display:flex;align-items:center;justify-content:center;
-    transition:transform .15s,border-color .15s,box-shadow .15s;
+    font-size:28px;transition:transform .15s,border-color .15s;
   }
   .cv-card-item:hover .cv-card-thumb,
   .cv-card-item:active .cv-card-thumb{
     transform:scale(1.05);border-color:var(--gold);
-    box-shadow:0 6px 20px rgba(0,0,0,0.5);
   }
   .cv-card-thumb img{
     position:absolute;inset:0;width:100%;height:100%;
-    object-fit:cover;object-position:top center;display:block;
+    object-fit:cover;display:block;
   }
   .cv-card-thumb .cv-card-fb{
-    position:relative;z-index:1;
-    font-size:12px;color:var(--text2);text-align:center;
-    padding:8px;line-height:1.4;font-weight:700;
+    position:relative;z-index:1;font-size:26px;
   }
   .cv-card-thumb .cv-card-badge{
-    position:absolute;top:5px;right:5px;
-    font-size:7px;padding:2px 5px;border-radius:4px;
+    position:absolute;top:3px;right:3px;
+    font-size:7px;padding:1px 4px;border-radius:3px;
     font-weight:700;letter-spacing:.3px;z-index:2;
   }
   .cv-card-badge.big-badge{background:rgba(90,159,212,0.9);color:#fff;}
-
-  /* ── 타일 그리드 (형용사/명사) ── */
-  .cv-content.tile-grid{
-    display:none;
-    flex-wrap:wrap;
-    gap:6px;
-    padding:8px 4px;
-    overflow-x:hidden;
-    overflow-y:auto;
-    max-height:280px;
-    justify-content:flex-start;
-    scroll-snap-type:none;
+  .cv-card-name{
+    font-size:10px;color:var(--text);font-weight:700;
+    text-align:center;max-width:72px;line-height:1.2;
   }
-  .cv-content.tile-grid.active{display:flex;}
+
+  /* ── 타일 슬라이드 아이템 (형용사/명사) ── */
   .cv-tile-item{
-    display:flex;align-items:center;justify-content:center;
-    cursor:default;
+    flex-shrink:0;scroll-snap-align:start;
+    display:flex;flex-direction:column;align-items:center;gap:4px;
+    cursor:pointer;
   }
   .cv-tile-thumb{
     position:relative;overflow:hidden;
-    width:82px;height:38px;border-radius:6px;
+    width:90px;height:44px;border-radius:7px;
     background:var(--surface2);
     display:flex;align-items:center;justify-content:center;
+    transition:transform .15s;
   }
+  .cv-tile-item:hover .cv-tile-thumb{transform:scale(1.05);}
   .cv-tile-thumb img.tile-bg{
     position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   }
@@ -135,22 +127,24 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
   .cv-tile-thumb.adj-tile .tile-text{
     position:relative;z-index:1;
     font-family:'Noto Sans KR',sans-serif;
-    font-weight:900;font-size:13px;
+    font-weight:900;font-size:14px;
     color:#3a6fbf;
-    letter-spacing:0.05em;
+    letter-spacing:0.08em;
     text-shadow:none;
   }
   /* 명사 — Nanum Myeongjo 바탕체, 붉은색, 왼쪽정렬, 넓은자간 */
   .cv-tile-thumb.noun-tile .tile-text{
     position:relative;z-index:1;
     font-family:'Nanum Myeongjo',serif;
-    font-weight:700;font-size:12px;
+    font-weight:700;font-size:13px;
     color:#c0392b;
-    letter-spacing:0.2em;
+    letter-spacing:0.25em;
     text-align:left;
     text-shadow:none;
-    padding-left:5px;
-    width:100%;
+    padding-left:4px;
+  }
+  .cv-tile-item .cv-tile-label{
+    font-size:9px;color:var(--text3);
   }
   .cv-legend{display:flex;gap:10px;justify-content:center;font-size:9px;color:var(--text3);flex-wrap:wrap;margin-top:-4px;}
   .cv-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:3px;vertical-align:middle;}
@@ -310,7 +304,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 
 /* CARDS */
 .gcard{
-  width:80px;border-radius:10px;overflow:hidden;cursor:pointer;
+  width:72px;border-radius:10px;overflow:hidden;cursor:pointer;
   border:1.5px solid var(--border);background:var(--surface);
   transition:all 0.15s;position:relative;flex-shrink:0;
 }
@@ -329,8 +323,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 .gcard.ans-correct{border-color:#50e090;}
 
 .gcard-art{
-  height:112px;display:flex;align-items:center;justify-content:center;
-  background:rgba(0,0,0,0.1);position:relative;
+  height:80px;display:flex;align-items:center;justify-content:center;
+  font-size:26px;background:rgba(0,0,0,0.25);position:relative;
   overflow:hidden;
 }
 .gcard-art img.card-img{
@@ -341,8 +335,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
   position:relative;z-index:1;display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:2px;
   width:100%;height:100%;
-  font-size:11px;color:var(--text2);font-weight:700;
-  text-align:center;padding:4px;
+  font-size:22px;color:var(--text2);
 }
 
 /* ── 힌트 타일 (형용사/명사) ── */
@@ -426,7 +419,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 .badge-s{background:rgba(40,80,140,0.9);color:#90c0f0;}
 .badge-t{background:rgba(120,30,30,0.9);color:#f09090;}
 .badge-m{background:rgba(100,80,20,0.9);color:#e0c070;}
-.gcard-name{display:none;}
+.gcard-name{font-size:9px;text-align:center;padding:5px 3px 3px;color:var(--text);font-weight:700;line-height:1.2;}
 
 /* hint tiles on card */
 .gcard-hints{
@@ -571,8 +564,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 ═══════════════════════════════════════ */
 @media(min-width:1280px){
   .gcard{width:88px;}
-  .gcard-art{height:118px;}
-
+  .gcard-art{height:88px;}
+  .gcard-name{font-size:10px;}
   .hint-panel{padding:10px 24px;}
   .hp-slot{font-size:9px;}
   .hp-label{font-size:8px;}
@@ -590,8 +583,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 ═══════════════════════════════════════ */
 @media(min-width:1024px) and (max-width:1279px){
   .gcard{width:82px;}
-  .gcard-art{height:108px;}
-
+  .gcard-art{height:80px;}
+  .gcard-name{font-size:10px;}
   .hint-panel{padding:8px 20px;}
   .hp-slot{font-size:9px;}
   .bottom-panel{padding:12px 20px;}
@@ -604,8 +597,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 ═══════════════════════════════════════ */
 @media(min-width:768px) and (max-width:1023px){
   .gcard{width:70px;}
-  .gcard-art{height:98px;}
-
+  .gcard-art{height:72px;}
+  .gcard-name{font-size:8.5px;}
   .hint-panel{padding:7px 14px;}
   .hp-slot{font-size:7.5px;padding:3px 5px;}
   .hp-label{font-size:6.5px;}
@@ -636,8 +629,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 
   .card-area{padding:10px;}
   .gcard{width:calc((100vw - 44px) / 5);max-width:72px;}
-  .gcard-art{height:90px;}
-
+  .gcard-art{height:64px;}
+  .gcard-name{font-size:8px;padding:3px 2px;}
   .card-row{gap:4px;}
 
   .bottom-panel{padding:10px 12px;gap:6px;}
@@ -693,8 +686,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
       <div class="cv-content active" id="cv-suspect"></div>
       <div class="cv-content" id="cv-tool"></div>
       <div class="cv-content" id="cv-motive"></div>
-      <div class="cv-content tile-grid" id="cv-adj"></div>
-      <div class="cv-content tile-grid" id="cv-noun"></div>
+      <div class="cv-content" id="cv-adj"></div>
+      <div class="cv-content" id="cv-noun"></div>
     </div>
   </div>
 
@@ -910,6 +903,10 @@ function buildCardViewer(){
       }
       item.appendChild(thumb);
 
+      const nameEl=document.createElement('div');
+      nameEl.className='cv-card-name';
+      nameEl.textContent=name;
+      item.appendChild(nameEl);
       el.appendChild(item);
     };
     baseList.forEach(n=>makeItem(n,false));
@@ -1281,7 +1278,7 @@ function renderRow(rowId,cards,elim,type){
     badge.textContent=typeLabel;
     artDiv.appendChild(badge);
     d.appendChild(artDiv);
-    d.innerHTML+=`${hintsHtml}${tokHtml}`;
+    d.innerHTML+=`<div class="gcard-name">${card}</div>${hintsHtml}${tokHtml}`;
     if(clickable)d.onclick=()=>onCardClick(card,type);
     row.appendChild(d);
   });
