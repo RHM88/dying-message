@@ -79,7 +79,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
     cursor:pointer;
   }
   .cv-card-thumb{
-    width:88px;height:130px;border-radius:10px;overflow:hidden;
+    width:88px;height:148px;border-radius:10px;overflow:hidden;
     background:var(--surface2);border:1px solid var(--border);
     position:relative;display:flex;align-items:center;justify-content:center;
     transition:transform .15s,border-color .15s,box-shadow .15s;
@@ -146,10 +146,10 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
     font-family:'Nanum Myeongjo',serif;
     font-weight:700;font-size:12px;
     color:#c0392b;
-    letter-spacing:0.2em;
+    letter-spacing:1em;
     text-align:left;
     text-shadow:none;
-    padding-left:18px;
+    padding-left:5px;
     width:100%;
   }
   .cv-legend{display:flex;gap:10px;justify-content:center;font-size:9px;color:var(--text3);flex-wrap:wrap;margin-top:-4px;}
@@ -227,11 +227,12 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
   position:relative;overflow:hidden;
 }
 .role-card-img{
-  width:100%;border-radius:12px;overflow:hidden;
-  background:var(--surface2);margin-bottom:16px;
+  width:100%;aspect-ratio:3/4;max-height:180px;border-radius:12px;overflow:hidden;
+  background:var(--surface2);display:flex;align-items:center;justify-content:center;
+  margin-bottom:16px;position:relative;
 }
-.role-card-img img{width:100%;height:auto;display:block;object-fit:contain;}
-.role-card-img .role-img-fb{font-size:48px;display:flex;align-items:center;justify-content:center;min-height:120px;}
+.role-card-img img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;}
+.role-card-img .role-img-fb{font-size:48px;}
 .role-card::after{
   content:'';position:absolute;top:0;left:0;right:0;height:2px;
   background:var(--accent-color,var(--gold));
@@ -436,18 +437,30 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 
 /* hint tiles on card */
 .gcard-hints{
-  display:flex;flex-direction:column;gap:2px;
-  padding:3px 4px;background:rgba(0,0,0,0.2);
-  border-top:1px solid var(--border);min-height:0;
+  display:flex;flex-direction:column;gap:3px;
+  padding:4px;background:rgba(0,0,0,0.15);
+  border-top:1px solid var(--border);
 }
-.hint-pair{
-  display:flex;gap:2px;
-  font-size:7px;color:var(--gold);line-height:1.3;
+.hint-pair{display:flex;gap:3px;align-items:center;}
+.hint-tile-placed{
+  position:relative;overflow:hidden;height:20px;flex:1;border-radius:3px;
+  background:var(--surface2);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:opacity .15s;
 }
-.hint-word{
-  background:rgba(200,169,110,0.1);border:0.5px solid rgba(200,169,110,0.25);
-  border-radius:3px;padding:1px 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;
+.hint-tile-placed:hover{opacity:0.7;}
+.hint-tile-placed img.tile-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+.hint-tile-placed .htp-text{position:relative;z-index:1;font-size:7px;font-weight:700;white-space:nowrap;padding:0 2px;}
+.hint-tile-placed.adj-placed .htp-text{font-family:'Noto Sans KR',sans-serif;color:#3a6fbf;}
+.hint-tile-placed.noun-placed .htp-text{font-family:'Nanum Myeongjo',serif;color:#c0392b;letter-spacing:0.1em;}
+.hint-tile-pending{
+  position:relative;overflow:hidden;height:20px;flex:1;border-radius:3px;
+  background:rgba(200,169,110,0.08);border:1px dashed rgba(200,169,110,0.4);
+  display:flex;align-items:center;justify-content:center;
 }
+.hint-tile-pending img.tile-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:0.6;}
+.hint-tile-pending .htp-text{position:relative;z-index:1;font-size:7px;font-weight:700;white-space:nowrap;padding:0 2px;}
+.hint-tile-pending.adj-pending .htp-text{font-family:'Noto Sans KR',sans-serif;color:#3a6fbf;}
+.hint-tile-pending.noun-pending .htp-text{font-family:'Nanum Myeongjo',serif;color:#c0392b;}
 
 /* token overlays on card */
 .card-tokens-overlay{
@@ -509,7 +522,17 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 .bp-msg strong{color:var(--text);}
 
 /* tile rows */
-.tiles-row{display:flex;gap:4px;flex-wrap:wrap;align-items:center;}
+.tiles-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.tile-img-wrap{position:relative;overflow:hidden;border-radius:6px;cursor:pointer;transition:transform .15s;flex-shrink:0;}
+.tile-img-wrap img.tile-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+.tile-img-wrap .tile-text-over{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;width:100%;height:100%;}
+.tile-img-wrap.adj-wrap{width:72px;height:32px;}
+.tile-img-wrap.adj-wrap .tile-text-over{font-family:'Noto Sans KR',sans-serif;font-weight:900;font-size:11px;color:#3a6fbf;}
+.tile-img-wrap.noun-wrap{width:72px;height:32px;}
+.tile-img-wrap.noun-wrap .tile-text-over{font-family:'Nanum Myeongjo',serif;font-weight:700;font-size:11px;color:#c0392b;letter-spacing:0.5em;padding-left:4px;}
+.tile-img-wrap.sel{box-shadow:0 0 0 2px var(--gold);}
+.tile-img-wrap.used{opacity:0.18;cursor:default;pointer-events:none;}
+.tile-img-wrap:hover:not(.used):not(.sel){transform:translateY(-2px);}
 .tile-label{font-size:8px;color:var(--text3);letter-spacing:1px;min-width:28px;}
 .tile{
   padding:5px 10px;border-radius:20px;font-size:10px;cursor:pointer;
@@ -903,7 +926,7 @@ function buildCardViewer(){
       const fb=document.createElement('div');
       fb.className='cv-card-fb';
       fb.textContent=name.slice(0,2);
-      fb.style.cssText='font-size:11px;color:var(--text2);text-align:center;line-height:1.3;display:none;';
+      fb.style.cssText='font-size:11px;color:var(--text2);text-align:center;line-height:1.3;';
       img.onerror=function(){this.style.display='none';fb.style.display='flex';};
       thumb.appendChild(img);
       thumb.appendChild(fb);
@@ -1130,6 +1153,7 @@ function showRole(){
         <img src="images/role/소설가.png" alt="소설가" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
         <div class="role-img-fb" style="display:none;">📖</div>
       </div>
+      <div class="role-title" style="color:#5a9fd4;">소설가</div>
       <div class="role-desc">당신은 살해당한 소설가입니다.<br>말을 할 수 없으며, 오직 타일로만<br>다잉 메세지를 남길 수 있습니다.</div>
       <div class="role-secret" onclick="openAnswerPopup()" style="cursor:pointer;">
         🔒 이번 사건의 정답 <span style="font-size:9px;color:var(--text3);">(탭하여 확인)</span>
@@ -1146,6 +1170,7 @@ function showRole(){
         <img src="images/role/공범.png" alt="공범" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
         <div class="role-img-fb" style="display:none;">🕶️</div>
       </div>
+      <div class="role-title" style="color:#a070d0;">공범</div>
       <div class="role-desc">당신은 살인범의 공범입니다.<br>탐정들의 추리를 틀린 방향으로<br>유도하여 방해하세요.</div>
       <div class="role-secret" onclick="openAnswerPopup()" style="cursor:pointer;">
         🔒 이번 사건의 정답 <span style="font-size:9px;color:var(--text3);">(탭하여 확인)</span>
@@ -1160,6 +1185,7 @@ function showRole(){
         <img src="images/role/탐정.png" alt="탐정" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
         <div class="role-img-fb" style="display:none;">🔍</div>
       </div>
+      <div class="role-title" style="color:#c8a96e;">탐정</div>
       <div class="role-desc">소설가의 다잉 메세지를 분석하여<br>범인, 살해 도구, 살해 동기를<br>모두 맞추세요!</div>
       <div style="margin-top:12px;font-size:10px;color:var(--text3);line-height:1.7;">
         추리 토큰으로 불필요한 카드를 제외하고<br>최종 추리를 제출하세요
@@ -1176,37 +1202,16 @@ function showRole(){
 function nextRole(){G.ri++;showRole();}
 function openAnswerPopup(){
   const cats=[{folder:'suspect',label:'범인',name:G.ans.s},{folder:'tool',label:'도구',name:G.ans.t},{folder:'motive',label:'동기',name:G.ans.m}];
-  const cardsHtml=cats.map(c=>`<div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;">
-    <div style="width:80px;border-radius:10px;overflow:hidden;background:var(--surface2);border:1px solid var(--border);">
-      <img src="images/${c.folder}/${c.name}.png" style="width:100%;height:auto;display:block;object-fit:contain;"
-        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-      <div style="display:none;align-items:center;justify-content:center;height:100px;font-size:11px;color:var(--text2);font-weight:700;">${c.name}</div>
-    </div>
-    <div style="font-size:9px;color:var(--text3);">${c.label}</div>
-    <div style="font-size:12px;font-weight:700;color:var(--text);">${c.name}</div>
-  </div>`).join('');
+  const cardsHtml=cats.map(c=>`<div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;"><div style="width:80px;height:112px;border-radius:10px;overflow:hidden;background:var(--surface2);border:1px solid var(--border);position:relative;"><img src="images/${c.folder}/${c.name}.png" style="width:100%;height:100%;object-fit:cover;object-position:top center;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;align-items:center;justify-content:center;width:100%;height:100%;font-size:11px;color:var(--text2);font-weight:700;">${c.name}</div></div><div style="font-size:9px;color:var(--text3);">${c.label}</div><div style="font-size:12px;font-weight:700;color:var(--text);">${c.name}</div></div>`).join('');
   let m=document.getElementById('answer-popup');
   if(!m){m=document.createElement('div');m.id='answer-popup';m.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;padding:24px;';m.onclick=e=>{if(e.target===m)m.style.display='none';};document.body.appendChild(m);}
-  m.innerHTML=`<div style="background:var(--surface);border-radius:16px;padding:20px;width:100%;max-width:320px;border:1px solid rgba(200,169,110,0.3);">
-    <div style="font-size:11px;color:var(--gold);letter-spacing:2px;text-align:center;margin-bottom:16px;">🔒 이번 사건의 정답</div>
-    <div style="display:flex;gap:12px;justify-content:center;">${cardsHtml}</div>
-    <button onclick="document.getElementById('answer-popup').style.display='none'" style="width:100%;margin-top:18px;padding:10px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:12px;cursor:pointer;font-family:inherit;">닫기</button>
-  </div>`;
+  m.innerHTML=`<div style="background:var(--surface);border-radius:16px;padding:20px;width:100%;max-width:320px;border:1px solid rgba(200,169,110,0.3);"><div style="font-size:11px;color:var(--gold);letter-spacing:2px;text-align:center;margin-bottom:16px;">🔒 이번 사건의 정답</div><div style="display:flex;gap:12px;justify-content:center;">${cardsHtml}</div><button onclick="document.getElementById('answer-popup').style.display='none'" style="width:100%;margin-top:18px;padding:10px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:12px;cursor:pointer;font-family:inherit;">닫기</button></div>`;
   m.style.display='flex';
 }
 function openOccupationPopup(name){
   let m=document.getElementById('occupation-popup');
   if(!m){m=document.createElement('div');m.id='occupation-popup';m.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;padding:24px;';m.onclick=e=>{if(e.target===m)m.style.display='none';};document.body.appendChild(m);}
-  m.innerHTML=`<div style="background:var(--surface);border-radius:16px;padding:20px;width:100%;max-width:240px;border:1px solid rgba(160,112,208,0.3);text-align:center;">
-    <div style="font-size:11px;color:var(--purple);letter-spacing:2px;margin-bottom:14px;">🎭 위장 직업</div>
-    <div style="border-radius:10px;overflow:hidden;background:var(--surface2);border:1px solid var(--border);margin-bottom:12px;">
-      <img src="images/suspect/${name}.png" style="width:100%;height:auto;display:block;object-fit:contain;"
-        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-      <div style="display:none;align-items:center;justify-content:center;height:120px;font-size:13px;font-weight:700;color:var(--text2);">${name}</div>
-    </div>
-    <div style="font-size:9px;color:var(--text3);margin-bottom:14px;">게임이 끝날 때까지 정체를 공개하지 마세요</div>
-    <button onclick="document.getElementById('occupation-popup').style.display='none'" style="width:100%;padding:10px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:12px;cursor:pointer;font-family:inherit;">닫기</button>
-  </div>`;
+  m.innerHTML=`<div style="background:var(--surface);border-radius:16px;padding:20px;width:100%;max-width:220px;border:1px solid rgba(160,112,208,0.3);text-align:center;"><div style="font-size:11px;color:var(--purple);letter-spacing:2px;margin-bottom:14px;">🎭 위장 직업</div><div style="width:100%;aspect-ratio:5/7;border-radius:10px;overflow:hidden;background:var(--surface2);border:1px solid var(--border);position:relative;margin-bottom:12px;"><img src="images/suspect/${name}.png" style="width:100%;height:100%;object-fit:cover;object-position:top center;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div style="display:none;align-items:center;justify-content:center;width:100%;height:100%;font-size:13px;font-weight:700;color:var(--text2);">${name}</div></div><div style="font-size:16px;font-weight:900;color:var(--text);margin-bottom:4px;">${name}</div><div style="font-size:9px;color:var(--text3);">게임이 끝날 때까지 정체를 공개하지 마세요</div><button onclick="document.getElementById('occupation-popup').style.display='none'" style="width:100%;margin-top:14px;padding:10px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:12px;cursor:pointer;font-family:inherit;">닫기</button></div>`;
   m.style.display='flex';
 }
 
@@ -1291,7 +1296,15 @@ function renderRow(rowId,cards,elim,type){
 
     // hint pairs for this card's type (show all hints for this row)
     const rowHints=G.hints[type]||[];
-    const hintsHtml=rowHints.length?`<div class="gcard-hints">${rowHints.map(h=>`<div class="hint-pair"><span class="hint-word">${h.adj}</span><span class="hint-word">${h.noun}</span></div>`).join('')}</div>`:'';
+    const isPendingTarget=G.phase==='hint'&&G.selHintTarget===type;
+    const pendingAdj=isPendingTarget&&G.selAdj;
+    const pendingNoun=isPendingTarget&&G.selNoun;
+    const hasPending=pendingAdj||pendingNoun;
+    const makePlacedTile=(word,ttype,pairIdx)=>`<div class="hint-tile-placed ${ttype}-placed" onclick="removeHint('${type}',${pairIdx})"><img class="tile-bg" src="images/${ttype==='adj'?'adj':'noun'}/bg.png" onerror="this.style.display='none'"><div class="htp-text">${word}</div></div>`;
+    const makePendingTile=(word,ttype)=>word?`<div class="hint-tile-pending ${ttype}-pending"><img class="tile-bg" src="images/${ttype==='adj'?'adj':'noun'}/bg.png" onerror="this.style.display='none'"><div class="htp-text">${word}</div></div>`:`<div class="hint-tile-pending ${ttype}-pending"><div class="htp-text" style="color:var(--text3);font-size:6px;">선택중...</div></div>`;
+    let pairsHtml=rowHints.map((h,i)=>`<div class="hint-pair">${makePlacedTile(h.adj,'adj',i)}${makePlacedTile(h.noun,'noun',i)}</div>`).join('');
+    if(hasPending) pairsHtml+=`<div class="hint-pair">${makePendingTile(pendingAdj||null,'adj')}${makePendingTile(pendingNoun||null,'noun')}</div>`;
+    const hintsHtml=(rowHints.length||hasPending)?`<div class="gcard-hints">${pairsHtml}</div>`:'';
 
     // token overlays
     let tokHtml='';
@@ -1395,8 +1408,39 @@ function countTotalExclude(){
 }
 
 // ══════ HINT PHASE ══════
-function selAdj(t){G.selAdj=G.selAdj===t?null:t;renderBottomPanel();}
-function selNoun(t){G.selNoun=G.selNoun===t?null:t;renderBottomPanel();}
+function selAdj(t){
+  G.selAdj=G.selAdj===t?null:t;
+  if(G.selAdj&&G.selNoun&&G.selHintTarget) autoPlace();
+  else{renderCards();renderBottomPanel();}
+}
+function selNoun(t){
+  G.selNoun=G.selNoun===t?null:t;
+  if(G.selAdj&&G.selNoun&&G.selHintTarget) autoPlace();
+  else{renderCards();renderBottomPanel();}
+}
+function autoPlace(){
+  const tp=G.selHintTarget;
+  if(!tp||!G.selAdj||!G.selNoun)return;
+  if((G.hints[tp]||[]).length>=4){
+    showModal('⚠️','알림','해당 카테고리에는 이미 힌트가 4개 있습니다.',[{l:'확인',c:'btn-dark',a:'close'}]);
+    G.selAdj=null;G.selNoun=null;renderCards();renderBottomPanel();return;
+  }
+  G.hints[tp].push({adj:G.selAdj,noun:G.selNoun});
+  G.usedAdj.push(G.selAdj);G.usedNoun.push(G.selNoun);
+  G.selAdj=null;G.selNoun=null;
+  renderHintSlots('hps-s',G.hints.s,'s');renderHintSlots('hps-t',G.hints.t,'t');
+  renderHintSlots('hps-m',G.hints.m,'m');
+  if(G.useAcc)renderHintSlots('hps-a',G.hints.a,'a');
+  renderCards();renderBottomPanel();
+}
+function removeHint(type,pairIdx){
+  if(G.phase!=='hint')return;
+  const pair=G.hints[type][pairIdx];if(!pair)return;
+  G.usedAdj=G.usedAdj.filter(t=>t!==pair.adj);
+  G.usedNoun=G.usedNoun.filter(t=>t!==pair.noun);
+  G.hints[type].splice(pairIdx,1);
+  renderCards();renderBottomPanel();
+}
 
 function placeHint(){
   const tp=G.selHintTarget;
@@ -1573,17 +1617,17 @@ function renderBottomPanel(){
       </div>
       <div class="tiles-row" style="margin-bottom:4px;">
         <span class="tile-label">형용사</span>
-        ${adjAvail.map(t=>`<span class="tile adj${G.selAdj===t?' sel':''}" onclick="selAdj('${t}')">${t}</span>`).join('')}
-        ${G.usedAdj.map(t=>`<span class="tile adj used">${t}</span>`).join('')}
+        ${adjAvail.map(t=>`<div class="tile-img-wrap adj-wrap${G.selAdj===t?' sel':''}" onclick="selAdj('${t}')"><img class="tile-bg" src="images/adj/bg.png" onerror="this.style.display='none'"><div class="tile-text-over">${t}</div></div>`).join('')}
+        ${G.usedAdj.map(t=>`<div class="tile-img-wrap adj-wrap used"><img class="tile-bg" src="images/adj/bg.png" onerror="this.style.display='none'"><div class="tile-text-over">${t}</div></div>`).join('')}
       </div>
       <div class="tiles-row" style="margin-bottom:6px;">
         <span class="tile-label">명사</span>
-        ${nounAvail.map(t=>`<span class="tile noun${G.selNoun===t?' sel':''}" onclick="selNoun('${t}')">${t}</span>`).join('')}
-        ${G.usedNoun.map(t=>`<span class="tile noun used">${t}</span>`).join('')}
+        ${nounAvail.map(t=>`<div class="tile-img-wrap noun-wrap${G.selNoun===t?' sel':''}" onclick="selNoun('${t}')"><img class="tile-bg" src="images/noun/bg.png" onerror="this.style.display='none'"><div class="tile-text-over">${t}</div></div>`).join('')}
+        ${G.usedNoun.map(t=>`<div class="tile-img-wrap noun-wrap used"><img class="tile-bg" src="images/noun/bg.png" onerror="this.style.display='none'"><div class="tile-text-over">${t}</div></div>`).join('')}
       </div>
       <div class="bp-row">
         <span class="bp-msg" style="font-size:11px;color:${canPlace?'var(--gold)':'var(--text3)'};">${step}</span>
-        <button class="btn btn-gold" onclick="placeHint()" ${canPlace?'':'disabled'}>배치 확정</button>
+
       </div>
     `;
 
