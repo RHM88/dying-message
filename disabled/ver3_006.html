@@ -150,7 +150,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
     text-align:left;
     text-shadow:none;
     padding-left:15px;
-    white-space:nowrap;
+    width:200%;
   }
   .cv-legend{display:flex;gap:10px;justify-content:center;font-size:9px;color:var(--text3);flex-wrap:wrap;margin-top:-4px;}
   .cv-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:3px;vertical-align:middle;}
@@ -425,7 +425,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
   text-shadow:0 1px 3px rgba(0,0,0,0.8);
   letter-spacing:0.05em;
 }
-.gcard-badge{display:none;
+.gcard-badge{
   position:absolute;top:3px;right:3px;font-size:6px;padding:1px 4px;
   border-radius:3px;font-weight:700;letter-spacing:0.5px;
 }
@@ -1395,31 +1395,27 @@ function countTotalExclude(){
 }
 
 // ══════ HINT PHASE ══════
-function placeHint(tp,adj,noun){
-  if(!tp||!adj||!noun)return;
+function selAdj(t){G.selAdj=G.selAdj===t?null:t;renderBottomPanel();}
+function selNoun(t){G.selNoun=G.selNoun===t?null:t;renderBottomPanel();}
+
+function placeHint(){
+  const tp=G.selHintTarget;
+  if(!tp||!G.selAdj||!G.selNoun)return;
   if((G.hints[tp]||[]).length>=4){
     showModal('⚠️','알림','해당 카테고리에는 이미 힌트가 4개 있습니다.\n(최대 4쌍)',[{l:'확인',c:'btn-dark',a:'close'}]);
     return;
   }
-  G.hints[tp].push({adj,noun});
-  G.usedAdj.push(adj);
-  G.usedNoun.push(noun);
+  G.hints[tp].push({adj:G.selAdj,noun:G.selNoun});
+  G.usedAdj.push(G.selAdj);
+  G.usedNoun.push(G.selNoun);
   G.selAdj=null;G.selNoun=null;
+  // 우측 힌트 슬롯 즉시 갱신
   renderHintSlots('hps-s',G.hints.s,'s');
   renderHintSlots('hps-t',G.hints.t,'t');
   renderHintSlots('hps-m',G.hints.m,'m');
   if(G.useAcc)renderHintSlots('hps-a',G.hints.a,'a');
+  // 하단 패널 갱신 (카드 전체 리렌더 없이)
   renderBottomPanel();
-}
-function selAdj(t){
-  G.selAdj=G.selAdj===t?null:t;
-  if(G.selAdj&&G.selNoun&&G.selHintTarget)placeHint(G.selHintTarget,G.selAdj,G.selNoun);
-  else renderBottomPanel();
-}
-function selNoun(t){
-  G.selNoun=G.selNoun===t?null:t;
-  if(G.selAdj&&G.selNoun&&G.selHintTarget)placeHint(G.selHintTarget,G.selAdj,G.selNoun);
-  else renderBottomPanel();
 }
 
 function endHintPhase(){
@@ -1577,16 +1573,17 @@ function renderBottomPanel(){
       </div>
       <div class="tiles-row" style="margin-bottom:4px;">
         <span class="tile-label">형용사</span>
-        ${adjAvail.map(t=>`<div class="tile-img-wrap adj-wrap${G.selAdj===t?' sel':''}" onclick="selAdj('${t}')"><img class="tile-bg" src="images/adj/bg.png" onerror="this.style.display='none'"><div class="tile-text-over">${t}</div></div>`).join('')}
-        ${G.usedAdj.map(t=>`<div class="tile-img-wrap adj-wrap used"><img class="tile-bg" src="images/adj/bg.png" onerror="this.style.display='none'"><div class="tile-text-over">${t}</div></div>`).join('')}
+        ${adjAvail.map(t=>`<span class="tile adj${G.selAdj===t?' sel':''}" onclick="selAdj('${t}')">${t}</span>`).join('')}
+        ${G.usedAdj.map(t=>`<span class="tile adj used">${t}</span>`).join('')}
       </div>
       <div class="tiles-row" style="margin-bottom:6px;">
         <span class="tile-label">명사</span>
-        ${nounAvail.map(t=>`<div class="tile-img-wrap noun-wrap${G.selNoun===t?' sel':''}" onclick="selNoun('${t}')"><img class="tile-bg" src="images/noun/bg.png" onerror="this.style.display='none'"><div class="tile-text-over">${t}</div></div>`).join('')}
-        ${G.usedNoun.map(t=>`<div class="tile-img-wrap noun-wrap used"><img class="tile-bg" src="images/noun/bg.png" onerror="this.style.display='none'"><div class="tile-text-over">${t}</div></div>`).join('')}
+        ${nounAvail.map(t=>`<span class="tile noun${G.selNoun===t?' sel':''}" onclick="selNoun('${t}')">${t}</span>`).join('')}
+        ${G.usedNoun.map(t=>`<span class="tile noun used">${t}</span>`).join('')}
       </div>
       <div class="bp-row">
         <span class="bp-msg" style="font-size:11px;color:${canPlace?'var(--gold)':'var(--text3)'};">${step}</span>
+        <button class="btn btn-gold" onclick="placeHint()" ${canPlace?'':'disabled'}>배치 확정</button>
       </div>
     `;
 
