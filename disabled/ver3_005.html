@@ -127,6 +127,11 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
     width:82px;height:38px;border-radius:6px;
     background:var(--surface2);
     display:flex;align-items:center;justify-content:center;
+    transition:transform .12s, box-shadow .12s;
+  }
+  .cv-tile-thumb.sel{
+    box-shadow:0 0 0 2px var(--gold);
+    transform:translateY(-3px) scale(1.06);
   }
   .cv-tile-thumb img.tile-bg{
     position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
@@ -146,11 +151,11 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
     font-family:'Nanum Myeongjo',serif;
     font-weight:700;font-size:12px;
     color:#c0392b;
-    letter-spacing:0.2em;
+    letter-spacing:0.8em;
     text-align:left;
     text-shadow:none;
-    padding-left:18px;
-    width:100%;
+    padding-left:15px;
+    white-space:nowrap;
   }
   .cv-legend{display:flex;gap:10px;justify-content:center;font-size:9px;color:var(--text3);flex-wrap:wrap;margin-top:-4px;}
   .cv-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:3px;vertical-align:middle;}
@@ -425,7 +430,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
   text-shadow:0 1px 3px rgba(0,0,0,0.8);
   letter-spacing:0.05em;
 }
-.gcard-badge{
+.gcard-badge{display:none;
   position:absolute;top:3px;right:3px;font-size:6px;padding:1px 4px;
   border-radius:3px;font-weight:700;letter-spacing:0.5px;
 }
@@ -435,7 +440,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 .gcard-name{display:none;}
 
 /* hint tiles on card */
-.gcard-hints{
+.gcard-hints{display:none;
   display:flex;flex-direction:column;gap:2px;
   padding:3px 4px;background:rgba(0,0,0,0.2);
   border-top:1px solid var(--border);min-height:0;
@@ -1573,13 +1578,13 @@ function renderBottomPanel(){
       </div>
       <div class="tiles-row" style="margin-bottom:4px;">
         <span class="tile-label">형용사</span>
-        ${adjAvail.map(t=>`<span class="tile adj${G.selAdj===t?' sel':''}" onclick="selAdj('${t}')">${t}</span>`).join('')}
-        ${G.usedAdj.map(t=>`<span class="tile adj used">${t}</span>`).join('')}
+        ${adjAvail.map(t=>`<div class="cv-tile-thumb adj-tile${G.selAdj===t?' sel':''}" onclick="selAdj('${t}')" style="cursor:pointer;flex-shrink:0;"><img class="tile-bg" src="images/adj/bg.png" onerror="this.style.display='none'"><span class="tile-text">${t}</span></div>`).join('')}
+        ${G.usedAdj.map(t=>`<div class="cv-tile-thumb adj-tile" style="opacity:0.3;flex-shrink:0;"><img class="tile-bg" src="images/adj/bg.png" onerror="this.style.display='none'"><span class="tile-text">${t}</span></div>`).join('')}
       </div>
       <div class="tiles-row" style="margin-bottom:6px;">
         <span class="tile-label">명사</span>
-        ${nounAvail.map(t=>`<span class="tile noun${G.selNoun===t?' sel':''}" onclick="selNoun('${t}')">${t}</span>`).join('')}
-        ${G.usedNoun.map(t=>`<span class="tile noun used">${t}</span>`).join('')}
+        ${nounAvail.map(t=>`<div class="cv-tile-thumb noun-tile${G.selNoun===t?' sel':''}" onclick="selNoun('${t}')" style="cursor:pointer;flex-shrink:0;"><img class="tile-bg" src="images/noun/bg.png" onerror="this.style.display='none'"><span class="tile-text">${t}</span></div>`).join('')}
+        ${G.usedNoun.map(t=>`<div class="cv-tile-thumb noun-tile" style="opacity:0.3;flex-shrink:0;"><img class="tile-bg" src="images/noun/bg.png" onerror="this.style.display='none'"><span class="tile-text">${t}</span></div>`).join('')}
       </div>
       <div class="bp-row">
         <span class="bp-msg" style="font-size:11px;color:${canPlace?'var(--gold)':'var(--text3)'};">${step}</span>
