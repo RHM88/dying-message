@@ -1372,18 +1372,18 @@ function renderHintSlots(id,hints,type){
     const h=hints[i];
     if(h){
       // 확정된 힌트 — 클릭하면 취소
-      const adjHtml=`<div class="hp-tile adj-tile-slot" onclick="removeHintSlot('${type}',${i})" title="취소"><img src="images/adj/bg.png" onerror="this.style.display='none'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;"><span style="position:relative;z-index:1;font-family:'Noto Sans KR',sans-serif;font-weight:900;font-size:9px;color:#3a6fbf;">${h.adj}</span></div>`;
-      const nounHtml=`<div class="hp-tile noun-tile-slot" onclick="removeHintSlot('${type}',${i})" title="취소"><img src="images/noun/bg.png" onerror="this.style.display='none'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;"><span style="position:relative;z-index:1;font-family:'Nanum Myeongjo',serif;font-weight:700;font-size:9px;color:#c0392b;letter-spacing:0.2em;">${h.noun}</span></div>`;
-      html+=`<div class="hp-slot${isAcc?' acc':''} filled" style="display:flex;gap:2px;padding:2px;">${adjHtml}${nounHtml}</div>`;
+      const adjHtml=`<div class="cv-tile-thumb adj-tile" onclick="removeHintSlot('${type}',${i})" style="cursor:pointer;flex-shrink:0;" title="취소"><img class="tile-bg" src="images/adj/bg.png" onerror="this.style.display='none'"><span class="tile-text">${h.adj}</span></div>`;
+      const nounHtml=`<div class="cv-tile-thumb noun-tile" onclick="removeHintSlot('${type}',${i})" style="cursor:pointer;flex-shrink:0;" title="취소"><img class="tile-bg" src="images/noun/bg.png" onerror="this.style.display='none'"><span class="tile-text">${h.noun}</span></div>`;
+      html+=`<div class="hp-slot${isAcc?' acc':''} filled" style="display:flex;gap:3px;padding:3px;align-items:center;">${adjHtml}${nounHtml}</div>`;
     } else if(isPending&&i===hints.length){
       // 선택중인 pending 슬롯
       const adjHtml=G.selAdj
-        ?`<div class="hp-tile adj-tile-slot pending"><img src="images/adj/bg.png" onerror="this.style.display='none'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;opacity:0.7;"><span style="position:relative;z-index:1;font-family:'Noto Sans KR',sans-serif;font-weight:900;font-size:9px;color:#3a6fbf;">${G.selAdj}</span></div>`
-        :`<div class="hp-tile adj-tile-slot empty-tile"><span style="font-size:8px;color:var(--text3);">형용사</span></div>`;
+        ?`<div class="cv-tile-thumb adj-tile" style="flex-shrink:0;opacity:0.7;"><img class="tile-bg" src="images/adj/bg.png" onerror="this.style.display='none'"><span class="tile-text">${G.selAdj}</span></div>`
+        :`<div class="cv-tile-thumb adj-tile" style="flex-shrink:0;opacity:0.3;"><img class="tile-bg" src="images/adj/bg.png" onerror="this.style.display='none'"><span class="tile-text" style="color:var(--text3);font-size:8px;">형용사</span></div>`;
       const nounHtml=G.selNoun
-        ?`<div class="hp-tile noun-tile-slot pending"><img src="images/noun/bg.png" onerror="this.style.display='none'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;opacity:0.7;"><span style="position:relative;z-index:1;font-family:'Nanum Myeongjo',serif;font-weight:700;font-size:9px;color:#c0392b;letter-spacing:0.2em;">${G.selNoun}</span></div>`
+        ?`<div class="cv-tile-thumb noun-tile" style="flex-shrink:0;opacity:0.7;"><img class="tile-bg" src="images/noun/bg.png" onerror="this.style.display='none'"><span class="tile-text">${G.selNoun}</span></div>`
         :`<div class="hp-tile noun-tile-slot empty-tile"><span style="font-size:8px;color:var(--text3);">명사</span></div>`;
-      html+=`<div class="hp-slot${isAcc?' acc':''}" style="display:flex;gap:2px;padding:2px;border:1px dashed rgba(200,169,110,0.4);">${adjHtml}${nounHtml}</div>`;
+      html+=`<div class="hp-slot${isAcc?' acc':''}" style="display:flex;gap:3px;padding:3px;align-items:center;border:1px dashed rgba(200,169,110,0.4);">${adjHtml}${nounHtml}</div>`;
     } else {
       html+=`<div class="hp-slot empty">·</div>`;
     }
