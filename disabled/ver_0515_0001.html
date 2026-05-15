@@ -340,13 +340,13 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 .gcard.ans-correct{border-color:#50e090;}
 
 .gcard-art{
-  display:flex;align-items:center;justify-content:center;
+  height:112px;display:flex;align-items:center;justify-content:center;
   background:rgba(0,0,0,0.1);position:relative;
   overflow:hidden;
 }
 .gcard-art img.card-img{
-  width:100%;height:auto;display:block;
-  object-fit:contain;
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:top center;display:block;
 }
 .gcard-art .card-fb{
   position:relative;z-index:1;display:flex;flex-direction:column;
@@ -495,13 +495,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
   color:var(--text3);display:flex;align-items:center;
   line-height:1.3;white-space:nowrap;
 }
-.hp-tile{
-  position:relative;display:flex;align-items:center;justify-content:center;
-  flex:1;height:100%;border-radius:4px;overflow:hidden;cursor:pointer;
-  background:var(--surface2);min-height:22px;
-}
-.hp-tile.pending{opacity:0.75;}
-.hp-tile.empty-tile{background:rgba(255,255,255,0.04);border:1px dashed rgba(255,255,255,0.1);}
 .hp-slot.filled{
   border-color:rgba(200,169,110,0.3);color:var(--gold);
   background:rgba(200,169,110,0.06);
@@ -589,7 +582,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 ═══════════════════════════════════════ */
 @media(min-width:1280px){
   .gcard{width:88px;}
-  .gcard-art{}
+  .gcard-art{height:118px;}
 
   .hint-panel{padding:10px 24px;}
   .hp-slot{font-size:9px;}
@@ -608,7 +601,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 ═══════════════════════════════════════ */
 @media(min-width:1024px) and (max-width:1279px){
   .gcard{width:82px;}
-  .gcard-art{}
+  .gcard-art{height:108px;}
 
   .hint-panel{padding:8px 20px;}
   .hp-slot{font-size:9px;}
@@ -622,7 +615,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 ═══════════════════════════════════════ */
 @media(min-width:768px) and (max-width:1023px){
   .gcard{width:70px;}
-  .gcard-art{}
+  .gcard-art{height:98px;}
 
   .hint-panel{padding:7px 14px;}
   .hp-slot{font-size:7.5px;padding:3px 5px;}
@@ -654,7 +647,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 
   .card-area{padding:10px;}
   .gcard{width:calc((100vw - 44px) / 5);max-width:72px;}
-  .gcard-art{}
+  .gcard-art{height:90px;}
 
   .card-row{gap:4px;}
 
@@ -1366,43 +1359,16 @@ function renderHintSlots(id,hints,type){
   if(!el)return;
   const isAcc=type==='a';
   const max=4;
-  const isPending=G.phase==='hint'&&G.selHintTarget===type;
   let html='';
   for(let i=0;i<max;i++){
     const h=hints[i];
     if(h){
-      // 확정된 힌트 — 클릭하면 취소
-      const adjHtml=`<div class="hp-tile adj-tile-slot" onclick="removeHintSlot('${type}',${i})" title="취소"><img src="images/adj/bg.png" onerror="this.style.display='none'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;"><span style="position:relative;z-index:1;font-family:'Noto Sans KR',sans-serif;font-weight:900;font-size:9px;color:#3a6fbf;">${h.adj}</span></div>`;
-      const nounHtml=`<div class="hp-tile noun-tile-slot" onclick="removeHintSlot('${type}',${i})" title="취소"><img src="images/noun/bg.png" onerror="this.style.display='none'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;"><span style="position:relative;z-index:1;font-family:'Nanum Myeongjo',serif;font-weight:700;font-size:9px;color:#c0392b;letter-spacing:0.2em;">${h.noun}</span></div>`;
-      html+=`<div class="hp-slot${isAcc?' acc':''} filled" style="display:flex;gap:2px;padding:2px;">${adjHtml}${nounHtml}</div>`;
-    } else if(isPending&&i===hints.length){
-      // 선택중인 pending 슬롯
-      const adjHtml=G.selAdj
-        ?`<div class="hp-tile adj-tile-slot pending"><img src="images/adj/bg.png" onerror="this.style.display='none'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;opacity:0.7;"><span style="position:relative;z-index:1;font-family:'Noto Sans KR',sans-serif;font-weight:900;font-size:9px;color:#3a6fbf;">${G.selAdj}</span></div>`
-        :`<div class="hp-tile adj-tile-slot empty-tile"><span style="font-size:8px;color:var(--text3);">형용사</span></div>`;
-      const nounHtml=G.selNoun
-        ?`<div class="hp-tile noun-tile-slot pending"><img src="images/noun/bg.png" onerror="this.style.display='none'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;opacity:0.7;"><span style="position:relative;z-index:1;font-family:'Nanum Myeongjo',serif;font-weight:700;font-size:9px;color:#c0392b;letter-spacing:0.2em;">${G.selNoun}</span></div>`
-        :`<div class="hp-tile noun-tile-slot empty-tile"><span style="font-size:8px;color:var(--text3);">명사</span></div>`;
-      html+=`<div class="hp-slot${isAcc?' acc':''}" style="display:flex;gap:2px;padding:2px;border:1px dashed rgba(200,169,110,0.4);">${adjHtml}${nounHtml}</div>`;
+      html+=`<div class="hp-slot${isAcc?' acc':''} filled">${h.adj} · ${h.noun}</div>`;
     } else {
       html+=`<div class="hp-slot empty">·</div>`;
     }
   }
   el.innerHTML=html;
-}
-
-function removeHintSlot(type,idx){
-  if(G.phase!=='hint')return;
-  const pair=G.hints[type][idx];
-  if(!pair)return;
-  G.usedAdj=G.usedAdj.filter(t=>t!==pair.adj);
-  G.usedNoun=G.usedNoun.filter(t=>t!==pair.noun);
-  G.hints[type].splice(idx,1);
-  renderHintSlots('hps-s',G.hints.s,'s');
-  renderHintSlots('hps-t',G.hints.t,'t');
-  renderHintSlots('hps-m',G.hints.m,'m');
-  if(G.useAcc)renderHintSlots('hps-a',G.hints.a,'a');
-  renderBottomPanel();
 }
 
 // ══════ CARD CLICK ══════
@@ -1434,24 +1400,8 @@ function countTotalExclude(){
 }
 
 // ══════ HINT PHASE ══════
-function selAdj(t){
-  G.selAdj=G.selAdj===t?null:t;
-  _refreshSlots();
-  if(G.selAdj&&G.selNoun&&G.selHintTarget) placeHint();
-  else renderBottomPanel();
-}
-function selNoun(t){
-  G.selNoun=G.selNoun===t?null:t;
-  _refreshSlots();
-  if(G.selAdj&&G.selNoun&&G.selHintTarget) placeHint();
-  else renderBottomPanel();
-}
-function _refreshSlots(){
-  renderHintSlots('hps-s',G.hints.s,'s');
-  renderHintSlots('hps-t',G.hints.t,'t');
-  renderHintSlots('hps-m',G.hints.m,'m');
-  if(G.useAcc)renderHintSlots('hps-a',G.hints.a,'a');
-}
+function selAdj(t){G.selAdj=G.selAdj===t?null:t;renderBottomPanel();}
+function selNoun(t){G.selNoun=G.selNoun===t?null:t;renderBottomPanel();}
 
 function placeHint(){
   const tp=G.selHintTarget;
@@ -1638,6 +1588,7 @@ function renderBottomPanel(){
       </div>
       <div class="bp-row">
         <span class="bp-msg" style="font-size:11px;color:${canPlace?'var(--gold)':'var(--text3)'};">${step}</span>
+        <button class="btn btn-gold" onclick="placeHint()" ${canPlace?'':'disabled'}>배치 확정</button>
       </div>
     `;
 
