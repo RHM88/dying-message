@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>DYING MESSAGE — 소설가의 마지막 문장</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
@@ -61,140 +61,21 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
   .cv-tabs{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;}
   .cv-tab{background:none;border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:10px;letter-spacing:1px;color:var(--text2);cursor:pointer;transition:all .2s;}
   .cv-tab.active{background:var(--gold);border-color:var(--gold);color:#000;font-weight:700;}
-  /* ── 카드 뷰어 콘텐츠 ── */
   .cv-content{display:none;}
-  .cv-content.active{display:flex;gap:10px;padding:8px 4px;
-    overflow-x:auto;overflow-y:hidden;
-    scroll-snap-type:x mandatory;
-    -webkit-overflow-scrolling:touch;
-  }
-  .cv-content::-webkit-scrollbar{height:4px;}
-  .cv-content::-webkit-scrollbar-track{background:transparent;}
+  .cv-content.active{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-height:240px;overflow-y:auto;padding:4px 2px;}
+  .cv-content::-webkit-scrollbar{width:4px;}
   .cv-content::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
-
-  /* ── 카드 슬라이드 아이템 (용의자/도구/동기) ── */
-  .cv-card-item{
-    flex-shrink:0;scroll-snap-align:start;
-    display:flex;flex-direction:column;align-items:center;gap:0;
-    cursor:pointer;
-  }
-  .cv-card-thumb{
-    width:88px;height:130px;border-radius:10px;overflow:hidden;
-    background:var(--surface2);border:1px solid var(--border);
-    position:relative;display:flex;align-items:center;justify-content:center;
-    transition:transform .15s,border-color .15s,box-shadow .15s;
-  }
-  .cv-card-item:hover .cv-card-thumb,
-  .cv-card-item:active .cv-card-thumb{
-    transform:scale(1.05);border-color:var(--gold);
-    box-shadow:0 6px 20px rgba(0,0,0,0.5);
-  }
-  .cv-card-thumb img{
-    position:absolute;inset:0;width:100%;height:100%;
-    object-fit:cover;object-position:top center;display:block;
-  }
-  .cv-card-thumb .cv-card-fb{
-    position:relative;z-index:1;
-    font-size:12px;color:var(--text2);text-align:center;
-    padding:8px;line-height:1.4;font-weight:700;
-  }
-  .cv-card-thumb .cv-card-badge{
-    position:absolute;top:5px;right:5px;
-    font-size:7px;padding:2px 5px;border-radius:4px;
-    font-weight:700;letter-spacing:.3px;z-index:2;
-  }
-  .cv-card-badge.big-badge{background:rgba(90,159,212,0.9);color:#fff;}
-
-  /* ── 타일 그리드 (형용사/명사) ── */
-  .cv-content.tile-grid{
-    display:none;
-    flex-wrap:wrap;
-    gap:6px;
-    padding:8px 4px;
-    overflow-x:hidden;
-    overflow-y:auto;
-    max-height:280px;
-    justify-content:flex-start;
-    scroll-snap-type:none;
-  }
-  .cv-content.tile-grid.active{display:flex;}
-  .cv-tile-item{
-    display:flex;align-items:center;justify-content:center;
-    cursor:default;
-  }
-  .cv-tile-thumb{
-    position:relative;overflow:hidden;
-    width:82px;height:38px;border-radius:6px;
-    background:var(--surface2);
-    display:flex;align-items:center;justify-content:center;
-    transition:transform .12s, box-shadow .12s;
-  }
-  .cv-tile-thumb.sel{
-    box-shadow:0 0 0 2px var(--gold);
-    transform:translateY(-3px) scale(1.06);
-  }
-  .cv-tile-thumb img.tile-bg{
-    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  }
-  /* 형용사 — Noto Sans KR 고딕, 파란색, 굵게 */
-  .cv-tile-thumb.adj-tile .tile-text{
-    position:relative;z-index:1;
-    font-family:'Noto Sans KR',sans-serif;
-    font-weight:900;font-size:13px;
-    color:#3a6fbf;
-    letter-spacing:0.05em;
-    text-shadow:none;
-  }
-  /* 명사 — Nanum Myeongjo 바탕체, 붉은색, 왼쪽정렬, 넓은자간 */
-  .cv-tile-thumb.noun-tile .tile-text{
-    position:relative;z-index:1;
-    font-family:'Nanum Myeongjo',serif;
-    font-weight:700;font-size:12px;
-    color:#c0392b;
-    letter-spacing:0.8em;
-    text-align:left;
-    text-shadow:none;
-    padding-left:15px;
-    white-space:nowrap;
-  }
+  .cv-chip{display:inline-flex;align-items:center;gap:5px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:11px;color:var(--text);white-space:nowrap;}
+  .cv-chip .cv-emoji{font-size:13px;}
+  .cv-chip.big{border-color:rgba(90,159,212,0.4);background:rgba(90,159,212,0.07);}
+  .cv-chip.tile-adj{border-color:rgba(80,200,120,0.3);background:rgba(80,200,120,0.06);font-size:10px;color:var(--text2);}
+  .cv-chip.tile-noun{border-color:rgba(200,100,100,0.3);background:rgba(200,100,100,0.06);font-size:10px;color:var(--text2);}
   .cv-legend{display:flex;gap:10px;justify-content:center;font-size:9px;color:var(--text3);flex-wrap:wrap;margin-top:-4px;}
   .cv-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:3px;vertical-align:middle;}
   .cv-dot.base{background:rgba(200,169,110,0.6);}
   .cv-dot.big{background:rgba(90,159,212,0.6);}
   .cv-dot.adj{background:rgba(80,200,120,0.6);}
   .cv-dot.noun{background:rgba(200,100,100,0.6);}
-
-  /* ── 카드 뷰어 독립 박스 ── */
-  .cv-box{
-    width:100%;max-width:400px;
-    background:var(--surface);
-    border:1px solid rgba(200,169,110,0.35);
-    border-radius:16px;
-    overflow:hidden;
-    transition:border-color .2s;
-  }
-  .cv-box:hover{border-color:rgba(200,169,110,0.6);}
-  .cv-box-header{
-    width:100%;background:none;border:none;
-    display:flex;align-items:center;justify-content:space-between;
-    padding:16px 18px;cursor:pointer;gap:14px;
-  }
-  .cv-box-left{display:flex;align-items:center;gap:12px;}
-  .cv-box-icon-wrap{
-    width:38px;height:38px;border-radius:10px;
-    background:rgba(200,169,110,0.12);
-    display:flex;align-items:center;justify-content:center;
-    font-size:18px;flex-shrink:0;
-  }
-  .cv-box-title{font-size:13px;font-weight:700;color:var(--gold);letter-spacing:.5px;text-align:left;}
-  .cv-box-desc{font-size:10px;color:var(--text3);letter-spacing:.5px;text-align:left;margin-top:2px;}
-  .cv-box-arrow{
-    font-size:20px;color:var(--gold2);transition:transform .3s;
-    flex-shrink:0;line-height:1;
-  }
-  .cv-box-arrow.open{transform:rotate(90deg);}
-  .cv-panel{padding:0 16px 16px;display:none;flex-direction:column;gap:12px;}
-  .cv-panel.open{display:flex;}
 .player-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
 .pbtn{
   aspect-ratio:1;border:1px solid var(--border);border-radius:10px;
@@ -231,12 +112,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
   padding:36px 32px;max-width:320px;width:100%;text-align:center;
   position:relative;overflow:hidden;
 }
-.role-card-img{
-  width:100%;border-radius:12px;overflow:hidden;
-  background:var(--surface2);margin-bottom:16px;
-}
-.role-card-img img{width:100%;height:auto;display:block;object-fit:contain;}
-.role-card-img .role-img-fb{font-size:48px;display:flex;align-items:center;justify-content:center;min-height:120px;}
 .role-card::after{
   content:'';position:absolute;top:0;left:0;right:0;height:2px;
   background:var(--accent-color,var(--gold));
@@ -321,7 +196,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 
 /* CARDS */
 .gcard{
-  width:80px;border-radius:10px;overflow:hidden;cursor:pointer;
+  width:72px;border-radius:10px;overflow:hidden;cursor:pointer;
   border:1.5px solid var(--border);background:var(--surface);
   transition:all 0.15s;position:relative;flex-shrink:0;
 }
@@ -340,107 +215,20 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 .gcard.ans-correct{border-color:#50e090;}
 
 .gcard-art{
-  height:112px;display:flex;align-items:center;justify-content:center;
-  background:rgba(0,0,0,0.1);position:relative;
-  overflow:hidden;
+  height:56px;display:flex;align-items:center;justify-content:center;
+  font-size:26px;background:rgba(0,0,0,0.25);position:relative;
 }
-.gcard-art img.card-img{
-  position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;object-position:top center;display:block;
-}
-.gcard-art .card-fb{
-  position:relative;z-index:1;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:2px;
-  width:100%;height:100%;
-  font-size:11px;color:var(--text2);font-weight:700;
-  text-align:center;padding:4px;
-}
-
-/* ── 힌트 타일 (형용사/명사) ── */
-.hint-tile{
-  display:inline-flex;align-items:center;justify-content:center;
-  position:relative;overflow:hidden;
-  border-radius:6px;padding:0;
-  min-width:52px;height:26px;
-}
-.hint-tile img.tile-bg{
-  position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;display:block;
-}
-.hint-tile .tile-text{
-  position:relative;z-index:1;
-  font-size:10px;font-weight:700;
-  letter-spacing:0.03em;
-  text-shadow:0 1px 3px rgba(0,0,0,0.7);
-  padding:0 6px;white-space:nowrap;
-}
-.hint-tile.adj .tile-text{
-  font-family:'Noto Sans KR',sans-serif;
-  color:#7ec8ff;
-}
-.hint-tile.noun .tile-text{
-  font-family:'Nanum Myeongjo',serif;
-  color:#ffaaaa;
-}
-
-/* ── cv-chip 이미지 ── */
-.cv-chip-img{
-  width:32px;height:40px;border-radius:4px;
-  object-fit:cover;display:block;flex-shrink:0;
-}
-.cv-chip-fb{
-  width:32px;height:40px;border-radius:4px;
-  background:var(--surface2);display:flex;align-items:center;
-  justify-content:center;font-size:18px;flex-shrink:0;
-}
-.cv-chip{
-  display:inline-flex;align-items:center;gap:7px;
-  background:var(--surface2);border:1px solid var(--border);
-  border-radius:8px;padding:5px 10px 5px 5px;
-  font-size:11px;color:var(--text);white-space:nowrap;
-}
-.cv-chip.big{border-color:rgba(90,159,212,0.4);background:rgba(90,159,212,0.07);}
-
-/* ── cv-chip 타일형 (형용사/명사) ── */
-.cv-chip.tile-adj,.cv-chip.tile-noun{
-  position:relative;overflow:hidden;
-  width:72px;height:40px;
-  border-radius:8px;padding:0;
-  justify-content:center;align-items:center;
-  border:none;background:var(--surface2);
-}
-.cv-chip.tile-adj img.tile-bg,
-.cv-chip.tile-noun img.tile-bg{
-  position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;
-}
-.cv-chip.tile-adj .tile-text{
-  position:relative;z-index:1;
-  font-family:'Noto Sans KR',sans-serif;
-  font-weight:700;font-size:10px;
-  color:#7ec8ff;
-  text-shadow:0 1px 3px rgba(0,0,0,0.8);
-  letter-spacing:0.05em;
-}
-.cv-chip.tile-noun .tile-text{
-  position:relative;z-index:1;
-  font-family:'Nanum Myeongjo',serif;
-  font-weight:700;font-size:10px;
-  color:#ffaaaa;
-  text-shadow:0 1px 3px rgba(0,0,0,0.8);
-  letter-spacing:0.05em;
-}
-.gcard-badge{display:none;
+.gcard-badge{
   position:absolute;top:3px;right:3px;font-size:6px;padding:1px 4px;
   border-radius:3px;font-weight:700;letter-spacing:0.5px;
 }
 .badge-s{background:rgba(40,80,140,0.9);color:#90c0f0;}
 .badge-t{background:rgba(120,30,30,0.9);color:#f09090;}
 .badge-m{background:rgba(100,80,20,0.9);color:#e0c070;}
-.gcard-name{display:none;}
+.gcard-name{font-size:9px;text-align:center;padding:5px 3px 3px;color:var(--text);font-weight:700;line-height:1.2;}
 
 /* hint tiles on card */
-.gcard-hints{display:none;
+.gcard-hints{
   display:flex;flex-direction:column;gap:2px;
   padding:3px 4px;background:rgba(0,0,0,0.2);
   border-top:1px solid var(--border);min-height:0;
@@ -582,8 +370,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 ═══════════════════════════════════════ */
 @media(min-width:1280px){
   .gcard{width:88px;}
-  .gcard-art{height:118px;}
-
+  .gcard-art{height:68px;font-size:32px;}
+  .gcard-name{font-size:10px;}
   .hint-panel{padding:10px 24px;}
   .hp-slot{font-size:9px;}
   .hp-label{font-size:8px;}
@@ -601,8 +389,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 ═══════════════════════════════════════ */
 @media(min-width:1024px) and (max-width:1279px){
   .gcard{width:82px;}
-  .gcard-art{height:108px;}
-
+  .gcard-art{height:62px;font-size:30px;}
+  .gcard-name{font-size:10px;}
   .hint-panel{padding:8px 20px;}
   .hp-slot{font-size:9px;}
   .bottom-panel{padding:12px 20px;}
@@ -615,8 +403,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 ═══════════════════════════════════════ */
 @media(min-width:768px) and (max-width:1023px){
   .gcard{width:70px;}
-  .gcard-art{height:98px;}
-
+  .gcard-art{height:54px;font-size:24px;}
+  .gcard-name{font-size:8.5px;}
   .hint-panel{padding:7px 14px;}
   .hp-slot{font-size:7.5px;padding:3px 5px;}
   .hp-label{font-size:6.5px;}
@@ -647,8 +435,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 
   .card-area{padding:10px;}
   .gcard{width:calc((100vw - 44px) / 5);max-width:72px;}
-  .gcard-art{height:90px;}
-
+  .gcard-art{height:48px;font-size:20px;}
+  .gcard-name{font-size:8px;padding:3px 2px;}
   .card-row{gap:4px;}
 
   .bottom-panel{padding:10px 12px;gap:6px;}
@@ -677,40 +465,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
     <div class="title-divider"></div>
     <div class="title-sub">소설가의 마지막 문장</div>
   </div>
-  <!-- ── 카드 뷰어 독립 박스 ── -->
-  <div class="cv-box" id="cv-box">
-    <button class="cv-box-header" onclick="toggleCardViewer()">
-      <div class="cv-box-left">
-        <div class="cv-box-icon-wrap">🃏</div>
-        <div>
-          <div class="cv-box-title">카드 목록 보기</div>
-          <div class="cv-box-desc">용의자 · 도구 · 동기 · 힌트 타일</div>
-        </div>
-      </div>
-      <span class="cv-box-arrow" id="cv-arrow">›</span>
-    </button>
-    <div class="cv-panel" id="cv-panel">
-      <div class="cv-tabs">
-        <button class="cv-tab active" onclick="cvTab('suspect')">용의자</button>
-        <button class="cv-tab" onclick="cvTab('tool')">도구</button>
-        <button class="cv-tab" onclick="cvTab('motive')">동기</button>
-        <button class="cv-tab" onclick="cvTab('adj')">형용사</button>
-        <button class="cv-tab" onclick="cvTab('noun')">명사</button>
-      </div>
-      <div class="cv-legend">
-        <span><span class="cv-dot base"></span>기본판</span>
-        <span><span class="cv-dot big"></span>빅박스 추가</span>
-      </div>
-      <div class="cv-content active" id="cv-suspect"></div>
-      <div class="cv-content" id="cv-tool"></div>
-      <div class="cv-content" id="cv-motive"></div>
-      <div class="cv-content tile-grid" id="cv-adj"></div>
-      <div class="cv-content tile-grid" id="cv-noun"></div>
-    </div>
-  </div>
-
-
-
   <div class="setup-card">
     <!-- 플레이어 수 -->
     <div>
@@ -727,6 +481,34 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
     <div id="acc-notice" style="display:none;font-size:10px;color:var(--purple);text-align:center;line-height:1.7;padding:10px;border-radius:8px;background:rgba(160,112,208,0.08);border:1px solid rgba(160,112,208,0.2);">
       🕶️ 4인 이상 — <strong>공범의 그림자</strong> 확장 규칙 적용<br>공범은 탐정들의 추리를 방해합니다
     </div>
+
+    <!-- 카드 뷰어 -->
+    <div>
+      <button class="cv-toggle" id="cv-toggle-btn" onclick="toggleCardViewer()">
+        🃏 <span id="cv-toggle-text">카드 목록 보기</span>
+      </button>
+      <div class="cv-panel" id="cv-panel">
+        <div class="cv-tabs">
+          <button class="cv-tab active" onclick="cvTab('suspect')">용의자</button>
+          <button class="cv-tab" onclick="cvTab('tool')">도구</button>
+          <button class="cv-tab" onclick="cvTab('motive')">동기</button>
+          <button class="cv-tab" onclick="cvTab('adj')">형용사</button>
+          <button class="cv-tab" onclick="cvTab('noun')">명사</button>
+        </div>
+        <div class="cv-legend">
+          <span><span class="cv-dot base"></span>기본판</span>
+          <span><span class="cv-dot big"></span>빅박스 추가</span>
+          <span><span class="cv-dot adj"></span>형용사 타일</span>
+          <span><span class="cv-dot noun"></span>명사 타일</span>
+        </div>
+        <div class="cv-content active" id="cv-suspect"></div>
+        <div class="cv-content" id="cv-tool"></div>
+        <div class="cv-content" id="cv-motive"></div>
+        <div class="cv-content" id="cv-adj"></div>
+        <div class="cv-content" id="cv-noun"></div>
+      </div>
+    </div>
+
     <button class="start-btn" id="sbtn" onclick="startGame()">게임 시작 →</button>
   </div>
   <div style="font-size:10px;color:var(--text3);text-align:center;line-height:1.8;">
@@ -821,9 +603,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 <script>
 // ══════ DATA ══════
 // ── 기본판 카드 풀 ──
-const SUSPECTS_BASE=['모델','음악가','바텐더','요리사','경찰','과학자','복서','마약상','시인','영화감독','건축가','미용사','의사','사기꾼','가수','군인','화가','야구선수','신문기자','아이돌','살인자','변호사','경호원'];
-const TOOLS_BASE=['하이힐','독버섯','망치','폭탄','케이블','넥타이','손도끼','트로피','벽돌','줄넘기','화분','가방','휴지통','곰인형','세탁기','냉장고','변기','코트','쇼핑백','베개','가위','권총','식칼'];
-const MOTIVES_BASE=['강도','배신','불륜','빚','스토킹','시기','유산','재미','협박','과음','도박','마약중독','식탐','욕설','이간질','집착','청부살인','층간소음'];
+const SUSPECTS_BASE=['모델','음악가','바텐더','요리사','경찰','과학자','복서','마약상','시인','영화감독','건축가','미용사','의사','사기꾼','가수','군인','화가','야구선수','신문기자','아이돌','살인마','변호사','경호원','간호사','교사','탐험가','깡패','정치인','외교관','트레이너','작곡가','유튜버','수영선수','배우','농부','정비사'];
+const TOOLS_BASE=['하이힐','독버섯','망치','폭탄','케이블','넥타이','손도끼','트로피','벽돌','줄넘기','화분','가방','휴지통','곰인형','세탁기','냉장고','변기','코트','쇼핑백','베개','가위','권총','식칼','시계','만년필','립스틱','담배','손전등','우산','주전자','드릴','휘발유','뱀','고춧가루','햄버거','수면제'];
+const MOTIVES_BASE=['협박','재미','빚','불륜','시기','유산','배신','스토킹','강도','과음','층간소음','청부살인','마약중독','이간질','욕설','도박','집착','식탐'];
 
 // ── 빅박스 추가 카드 (이미지 분석 기준) ──
 const SUSPECTS_BIG=['우주비행사','간첩','무당','고고학자','귀신','프로레슬러','노숙자','게이샤','도둑','양봉업자','공인중개사'];
@@ -834,191 +616,78 @@ const MOTIVES_BIG=['중고 사기','잔소리','반찬투정','뺑소니','코�
 let SUSPECTS=[...SUSPECTS_BASE];
 let TOOLS=[...TOOLS_BASE];
 let MOTIVES=[...MOTIVES_BASE];
-const ADJ=['두꺼운','징그러운','수줍은','세심한','치사한','거친','소심한','두려운','빠른','느린','화려한','단순한','가벼운','복잡한','달콤한','날카로운','부드러운','긴','짧은','넓은','높은','낮은','뜨거운','차가운','어두운','밝은','숙련된','답답한','사각형의','적은',
+const ADJ=['뜨거운','차가운','빠른','느린','복잡한','단순한','높은','낮은','무거운','가벼운','부드러운','딱딱한','많은','적은','똑똑한','멍청한','익숙한','낯선','차분한','아름다운','조용한','시끄러운','친절한','투명한','예술적인','계산적인','큰','작은','비싼','저렴한','얇은','두꺼운','어두운','밝은','오래된','새로운','외로운','냄새나는','긴','짧은','이기적인','답답한','숙련된','더러운','징그러운','수줍은','세심한','치사한','거친','소심한','두려운','화려한','달콤한','날카로운','넓은','사각형의',
   // 빅박스 추가
   '마른','젖은','닮은','변치않는','힘든','속상한','부끄러운','야한','겸손한','긴장된'];
-const NOUN=['생활','관계','나무','꽃','금속','바다','시간','달','겨울','혈액','도시','그림자','기억','거울','불꽃','바람','밤','눈물','침묵','사랑','돈','권력','비밀','공포','희망','자유','운명','계절','빛','소리',
+const NOUN=['홀수','진동','고통','생활','짝수','갈증','공간','밤','달','원','시간','낮','여름','삼각형','약속','관계','겨울','사각형','기술','접촉','금속','열정','머리','질서','나무','냉정','팔','맛','꽃','곡선','다리','압박','속도','직선','몸','자유','별','소음','눈','입','바다','믿음','대화','땅','감정','진심','말','반복','피로','걱정','하루','습관','얼굴',
   // 빅박스 추가
   '두쫀쿠','휴일','어둠','영웅','온도','코스피','충격','욕구','라이브','틱톡'];
 const EMOJIS={
   // 기본판 용의자
-  모델:'💃',음악가:'🎸',바텐더:'🍸',요리사:'👨‍🍳',경찰:'👮',과학자:'🔬',복서:'🥊',마약상:'💊',시인:'✒️',영화감독:'🎬',건축가:'📐',미용사:'✂️',의사:'🩺',사기꾼:'🃏',가수:'🎤',군인:'🪖',화가:'🎨',야구선수:'⚾',신문기자:'📰',아이돌:'⭐',살인자:'🗡️',변호사:'⚖️',경호원:'🕶️',
+  모델:'💃',음악가:'🎸',바텐더:'🍸',요리사:'👨‍🍳',경찰:'👮',과학자:'🔬',복서:'🥊',마약상:'💊',시인:'✒️',영화감독:'🎬',건축가:'📐',미용사:'✂️',의사:'🩺',사기꾼:'🃏',가수:'🎤',군인:'🪖',화가:'🎨',야구선수:'⚾',신문기자:'📰',아이돌:'⭐',살인마:'🗡️',변호사:'⚖️',경호원:'🕶️',간호사:'💉',교사:'📚',탐험가:'🧭',깡패:'😈',정치인:'🏛️',외교관:'🤝',트레이너:'🏋️',작곡가:'🎼',유튜버:'📹',수영선수:'🏊',배우:'🎭',농부:'🌾',정비사:'🔧',
   // 빅박스 추가 용의자
   우주비행사:'🚀',간첩:'🕵️',무당:'🔮',고고학자:'🏺',귀신:'👻',프로레슬러:'🤼',노숙자:'🏚️',게이샤:'🎎',도둑:'🦹',양봉업자:'🐝',공인중개사:'🏠',
   // 기본판 도구
-  하이힐:'👠',독버섯:'🍄',망치:'🔨',폭탄:'💣',케이블:'🔌',넥타이:'👔',손도끼:'🪓',트로피:'🏆',벽돌:'🧱',줄넘기:'🪢',화분:'🌿',가방:'🎒',휴지통:'🗑️',곰인형:'🧸',세탁기:'🫧',냉장고:'🧊',변기:'🚽',코트:'🧥',쇼핑백:'🛍️',베개:'🛏️',가위:'✂️',권총:'🔫',식칼:'🔪',
+  하이힐:'👠',독버섯:'🍄',망치:'🔨',폭탄:'💣',케이블:'🔌',넥타이:'👔',손도끼:'🪓',트로피:'🏆',벽돌:'🧱',줄넘기:'🪢',화분:'🌿',가방:'🎒',휴지통:'🗑️',곰인형:'🧸',세탁기:'🫧',냉장고:'🧊',변기:'🚽',코트:'🧥',쇼핑백:'🛍️',베개:'🛏️',가위:'✂️',권총:'🔫',식칼:'🔪',시계:'⏰',만년필:'🖊️',립스틱:'💄',담배:'🚬',손전등:'🔦',우산:'☂️',주전자:'🫖',드릴:'🔩',휘발유:'⛽',뱀:'🐍',고춧가루:'🌶️',햄버거:'🍔',수면제:'💊',
   // 빅박스 추가 도구
   단두대:'⚔️',문어:'🐙',말벌:'🐝',복어:'🐡',땅콩잼:'🫙',자동차:'🚗',두리안:'🌵',면도기:'🪒',홍차:'🍵',조각품:'🗿',장미:'🌹',
   // 기본판 동기
-  시기:'😒',유산:'💰',배신:'💔',스토킹:'👀',원한:'😤',질투:'💚',복수:'⚡',탐욕:'💵',협박:'📨',
+  협박:'📨',재미:'😂',빚:'💸',불륜:'💏',시기:'😒',유산:'💰',배신:'💔',스토킹:'👀',강도:'🔪',과음:'🍺',층간소음:'🔊',청부살인:'💼',마약중독:'💉',이간질:'🗣️',욕설:'💢',도박:'🎰',집착:'🔗',식탐:'🍽️',
   // 빅박스 추가 동기
   '중고 사기':'🛒',잔소리:'📢',반찬투정:'🍱',뺑소니:'🚗',코골이:'😴'
 };
 
 let G={};
 
-// ══════ IMAGE HELPERS ══════
-const CAT_FOLDER={s:'suspect',t:'tool',m:'motive'};
-
-function getCardImg(name, catKey){
-  // catKey: 's'|'t'|'m'  or  folder name 'suspect'|'tool'|'motive'
-  const folder = CAT_FOLDER[catKey] || catKey;
-  return `images/${folder}/${name}.png`;
-}
-
-function cardImgEl(name, catKey, w, h){
-  // w/h in px — returns <img> that falls back to null on error
-  const img = document.createElement('img');
-  img.className = 'card-img';
-  img.src = getCardImg(name, catKey);
-  img.alt = name;
-  img.width = w; img.height = h;
-  img.onerror = function(){ this.style.display='none'; };
-  return img;
-}
-
-function tileImgEl(type){
-  // type: 'adj' | 'noun'
-  const img = document.createElement('img');
-  img.className = 'tile-bg';
-  img.src = `images/${type}/bg.png`;
-  img.alt = '';
-  img.onerror = function(){ this.style.display='none'; };
-  return img;
-}
-
 // ══════ CARD VIEWER ══════
 function buildCardViewer(){
-  // ── 카드 (용의자/도구/동기) — 가로 슬라이드
-  const renderCards=(elId,baseList,bigList,folder)=>{
-    const el=document.getElementById(elId);
+  const render=(ids,baseList,bigList,cls,emojiMap)=>{
+    const el=document.getElementById(ids);
     if(!el)return;
     el.innerHTML='';
-    const makeItem=(name,isBig)=>{
-      const item=document.createElement('div');
-      item.className='cv-card-item';
-      item.onclick=()=>openCardModal(name,folder,isBig);
-
-      const thumb=document.createElement('div');
-      thumb.className='cv-card-thumb';
-
-      const img=document.createElement('img');
-      img.src=`images/${folder}/${name}.png`;
-      img.alt=name;
-      const fb=document.createElement('div');
-      fb.className='cv-card-fb';
-      fb.textContent=name.slice(0,2);
-      fb.style.cssText='font-size:11px;color:var(--text2);text-align:center;line-height:1.3;display:none;';
-      img.onerror=function(){this.style.display='none';fb.style.display='flex';};
-      thumb.appendChild(img);
-      thumb.appendChild(fb);
-
-      if(isBig){
-        const badge=document.createElement('div');
-        badge.className='cv-card-badge big-badge';
-        badge.textContent='BIG';
-        thumb.appendChild(badge);
-      }
-      item.appendChild(thumb);
-
-      el.appendChild(item);
-    };
-    baseList.forEach(n=>makeItem(n,false));
-    bigList.forEach(n=>makeItem(n,true));
+    baseList.forEach(n=>{
+      const chip=document.createElement('span');
+      chip.className='cv-chip';
+      chip.innerHTML=`<span class="cv-emoji">${emojiMap[n]||'•'}</span>${n}`;
+      el.appendChild(chip);
+    });
+    bigList.forEach(n=>{
+      const chip=document.createElement('span');
+      chip.className='cv-chip big';
+      chip.innerHTML=`<span class="cv-emoji">${emojiMap[n]||'•'}</span>${n}`;
+      el.appendChild(chip);
+    });
   };
-  renderCards('cv-suspect',SUSPECTS_BASE,SUSPECTS_BIG,'suspect');
-  renderCards('cv-tool',TOOLS_BASE,TOOLS_BIG,'tool');
-  renderCards('cv-motive',MOTIVES_BASE,MOTIVES_BIG,'motive');
+  render('cv-suspect',SUSPECTS_BASE,SUSPECTS_BIG,'',EMOJIS);
+  render('cv-tool',TOOLS_BASE,TOOLS_BIG,'',EMOJIS);
+  render('cv-motive',MOTIVES_BASE,MOTIVES_BIG,'',EMOJIS);
 
-  // ── 타일 (형용사/명사) — 가로 슬라이드
-  const makeTileItem=(word,type)=>{
-    const item=document.createElement('div');
-    item.className='cv-tile-item';
-
-    const thumb=document.createElement('div');
-    thumb.className=`cv-tile-thumb ${type}-tile`;
-
-    const bgImg=document.createElement('img');
-    bgImg.className='tile-bg';
-    bgImg.src=`images/${type}/bg.png`;
-    bgImg.alt='';
-    bgImg.onerror=function(){this.style.display='none';};
-    thumb.appendChild(bgImg);
-
-    const txt=document.createElement('span');
-    txt.className='tile-text';
-    txt.textContent=word;
-    thumb.appendChild(txt);
-    item.appendChild(thumb);
-    return item;
-  };
-
+  // 형용사 타일 (기본판 30개 + 빅박스 10개)
+  const adjBase=ADJ.slice(0,30);
+  const adjBig=ADJ.slice(30);
   const adjEl=document.getElementById('cv-adj');
   if(adjEl){
     adjEl.innerHTML='';
-    ADJ.forEach(w=>adjEl.appendChild(makeTileItem(w,'adj')));
+    adjBase.forEach(w=>{const c=document.createElement('span');c.className='cv-chip tile-adj';c.textContent=w;adjEl.appendChild(c);});
+    adjBig.forEach(w=>{const c=document.createElement('span');c.className='cv-chip tile-adj big';c.style.borderColor='rgba(90,159,212,0.4)';c.textContent=w;adjEl.appendChild(c);});
   }
+
+  // 명사 타일 (기본판 30개 + 빅박스 10개)
+  const nounBase=NOUN.slice(0,30);
+  const nounBig=NOUN.slice(30);
   const nounEl=document.getElementById('cv-noun');
   if(nounEl){
     nounEl.innerHTML='';
-    NOUN.forEach(w=>nounEl.appendChild(makeTileItem(w,'noun')));
+    nounBase.forEach(w=>{const c=document.createElement('span');c.className='cv-chip tile-noun';c.textContent=w;nounEl.appendChild(c);});
+    nounBig.forEach(w=>{const c=document.createElement('span');c.className='cv-chip tile-noun big';c.style.borderColor='rgba(90,159,212,0.4)';c.textContent=w;nounEl.appendChild(c);});
   }
-}
-
-// ── 카드 확대 모달
-function openCardModal(name, folder, isBig){
-  let modal=document.getElementById('cv-modal');
-  if(!modal){
-    modal=document.createElement('div');
-    modal.id='cv-modal';
-    modal.style.cssText=`
-      position:fixed;inset:0;z-index:9999;
-      background:rgba(0,0,0,0.82);
-      display:flex;align-items:center;justify-content:center;
-      padding:24px;
-    `;
-    modal.onclick=e=>{ if(e.target===modal) closeCardModal(); };
-    document.body.appendChild(modal);
-  }
-  modal.innerHTML=`
-    <div style="
-      background:var(--surface);border-radius:16px;
-      max-width:260px;width:100%;overflow:hidden;
-      border:1px solid ${isBig?'rgba(90,159,212,0.5)':'var(--border)'};
-      position:relative;
-    ">
-      <div style="width:100%;aspect-ratio:5/7;background:var(--surface2);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;">
-        <img src="images/${folder}/${name}.png" alt="${name}"
-          style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;"
-          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
-        >
-        <div style="display:none;align-items:center;justify-content:center;width:100%;height:100%;font-size:14px;color:var(--text2);">${name}</div>
-        ${isBig?'<div style="position:absolute;top:8px;right:8px;background:rgba(90,159,212,0.9);color:#fff;font-size:9px;padding:2px 6px;border-radius:4px;font-weight:700;">빅박스</div>':''}
-      </div>
-      <div style="padding:14px;text-align:center;">
-        <div style="font-size:16px;font-weight:900;color:var(--text);letter-spacing:.5px;">${name}</div>
-        <div style="font-size:10px;color:var(--text3);margin-top:4px;">${{suspect:'용의자',tool:'도구',motive:'동기'}[folder]||''}</div>
-      </div>
-      <button onclick="closeCardModal()" style="
-        position:absolute;top:8px;left:8px;
-        background:rgba(0,0,0,0.5);border:none;
-        color:#fff;width:28px;height:28px;border-radius:50%;
-        font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;
-      ">×</button>
-    </div>
-  `;
-  modal.style.display='flex';
-}
-function closeCardModal(){
-  const m=document.getElementById('cv-modal');
-  if(m) m.style.display='none';
 }
 
 function toggleCardViewer(){
   const panel=document.getElementById('cv-panel');
-  const arrow=document.getElementById('cv-arrow');
+  const txt=document.getElementById('cv-toggle-text');
   const isOpen=panel.classList.toggle('open');
-  if(arrow) arrow.classList.toggle('open', isOpen);
+  txt.textContent=isOpen?'카드 목록 닫기':'카드 목록 보기';
   if(isOpen) buildCardViewer();
 }
 
@@ -1131,13 +800,12 @@ function showRole(){
   let html='';
   if(role==='소설가'){
     html=`<div class="role-card" style="--accent-color:#5a9fd4;">
-      <div class="role-card-img">
-        <img src="images/role/소설가.png" alt="소설가" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-        <div class="role-img-fb" style="display:none;">📖</div>
-      </div>
+      <span class="role-icon">📖</span>
+      <div class="role-title" style="color:#5a9fd4;">소설가</div>
       <div class="role-desc">당신은 살해당한 소설가입니다.<br>말을 할 수 없으며, 오직 타일로만<br>다잉 메세지를 남길 수 있습니다.</div>
-      <div class="role-secret" onclick="openAnswerPopup()" style="cursor:pointer;">
-        🔒 이번 사건의 정답 <span style="font-size:9px;color:var(--text3);">(탭하여 확인)</span>
+      <div class="role-secret">
+        🔒 이번 사건의 정답<br>
+        <strong>범인: ${G.ans.s}</strong> &nbsp;|&nbsp; <strong>도구: ${G.ans.t}</strong> &nbsp;|&nbsp; <strong>동기: ${G.ans.m}</strong>
       </div>
     </div>`;
   } else if(role==='공범'){
@@ -1147,24 +815,22 @@ function showRole(){
       G.accOccupation=G.sus[Math.floor(Math.random()*9)];
     }
     html=`<div class="role-card" style="--accent-color:#a070d0;">
-      <div class="role-card-img">
-        <img src="images/role/공범.png" alt="공범" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-        <div class="role-img-fb" style="display:none;">🕶️</div>
-      </div>
+      <span class="role-icon">🕶️</span>
+      <div class="role-title" style="color:#a070d0;">공범</div>
       <div class="role-desc">당신은 살인범의 공범입니다.<br>탐정들의 추리를 틀린 방향으로<br>유도하여 방해하세요.</div>
-      <div class="role-secret" onclick="openAnswerPopup()" style="cursor:pointer;">
-        🔒 이번 사건의 정답 <span style="font-size:9px;color:var(--text3);">(탭하여 확인)</span>
+      <div class="role-secret">
+        🔒 이번 사건의 정답<br>
+        <strong>범인: ${G.ans.s}</strong> &nbsp;|&nbsp; <strong>도구: ${G.ans.t}</strong> &nbsp;|&nbsp; <strong>동기: ${G.ans.m}</strong>
       </div>
-      <div class="role-occupation" onclick="openOccupationPopup('${G.accOccupation}')" style="cursor:pointer;">
-        🎭 위장 직업 <span style="font-size:9px;color:var(--text3);">(탭하여 확인)</span>
+      <div class="role-occupation">
+        당신의 위장 직업: <strong>${G.accOccupation}</strong><br>
+        <span style="font-size:10px;color:var(--text3);">게임이 끝날 때까지 정체를 공개하지 마세요</span>
       </div>
     </div>`;
   } else {
     html=`<div class="role-card" style="--accent-color:#c8a96e;">
-      <div class="role-card-img">
-        <img src="images/role/탐정.png" alt="탐정" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-        <div class="role-img-fb" style="display:none;">🔍</div>
-      </div>
+      <span class="role-icon">🔍</span>
+      <div class="role-title" style="color:#c8a96e;">탐정</div>
       <div class="role-desc">소설가의 다잉 메세지를 분석하여<br>범인, 살해 도구, 살해 동기를<br>모두 맞추세요!</div>
       <div style="margin-top:12px;font-size:10px;color:var(--text3);line-height:1.7;">
         추리 토큰으로 불필요한 카드를 제외하고<br>최종 추리를 제출하세요
@@ -1179,41 +845,6 @@ function showRole(){
 }
 
 function nextRole(){G.ri++;showRole();}
-function openAnswerPopup(){
-  const cats=[{folder:'suspect',label:'범인',name:G.ans.s},{folder:'tool',label:'도구',name:G.ans.t},{folder:'motive',label:'동기',name:G.ans.m}];
-  const cardsHtml=cats.map(c=>`<div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;">
-    <div style="width:80px;border-radius:10px;overflow:hidden;background:var(--surface2);border:1px solid var(--border);">
-      <img src="images/${c.folder}/${c.name}.png" style="width:100%;height:auto;display:block;object-fit:contain;"
-        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-      <div style="display:none;align-items:center;justify-content:center;height:100px;font-size:11px;color:var(--text2);font-weight:700;">${c.name}</div>
-    </div>
-    <div style="font-size:9px;color:var(--text3);">${c.label}</div>
-    <div style="font-size:12px;font-weight:700;color:var(--text);">${c.name}</div>
-  </div>`).join('');
-  let m=document.getElementById('answer-popup');
-  if(!m){m=document.createElement('div');m.id='answer-popup';m.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;padding:24px;';m.onclick=e=>{if(e.target===m)m.style.display='none';};document.body.appendChild(m);}
-  m.innerHTML=`<div style="background:var(--surface);border-radius:16px;padding:20px;width:100%;max-width:320px;border:1px solid rgba(200,169,110,0.3);">
-    <div style="font-size:11px;color:var(--gold);letter-spacing:2px;text-align:center;margin-bottom:16px;">🔒 이번 사건의 정답</div>
-    <div style="display:flex;gap:12px;justify-content:center;">${cardsHtml}</div>
-    <button onclick="document.getElementById('answer-popup').style.display='none'" style="width:100%;margin-top:18px;padding:10px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:12px;cursor:pointer;font-family:inherit;">닫기</button>
-  </div>`;
-  m.style.display='flex';
-}
-function openOccupationPopup(name){
-  let m=document.getElementById('occupation-popup');
-  if(!m){m=document.createElement('div');m.id='occupation-popup';m.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;padding:24px;';m.onclick=e=>{if(e.target===m)m.style.display='none';};document.body.appendChild(m);}
-  m.innerHTML=`<div style="background:var(--surface);border-radius:16px;padding:20px;width:100%;max-width:240px;border:1px solid rgba(160,112,208,0.3);text-align:center;">
-    <div style="font-size:11px;color:var(--purple);letter-spacing:2px;margin-bottom:14px;">🎭 위장 직업</div>
-    <div style="border-radius:10px;overflow:hidden;background:var(--surface2);border:1px solid var(--border);margin-bottom:12px;">
-      <img src="images/suspect/${name}.png" style="width:100%;height:auto;display:block;object-fit:contain;"
-        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-      <div style="display:none;align-items:center;justify-content:center;height:120px;font-size:13px;font-weight:700;color:var(--text2);">${name}</div>
-    </div>
-    <div style="font-size:9px;color:var(--text3);margin-bottom:14px;">게임이 끝날 때까지 정체를 공개하지 마세요</div>
-    <button onclick="document.getElementById('occupation-popup').style.display='none'" style="width:100%;padding:10px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:12px;cursor:pointer;font-family:inherit;">닫기</button>
-  </div>`;
-  m.style.display='flex';
-}
 
 // ══════ GAME INIT ══════
 function beginGame(){
@@ -1307,30 +938,15 @@ function renderRow(rowId,cards,elim,type){
 
     const d=document.createElement('div');
     d.className=cls;
-    // art div — image + fallback emoji
-    const artDiv=document.createElement('div');
-    artDiv.className='gcard-art';
-    // 이미지 — 없으면 카드명 텍스트만 표시
-    const cImg=document.createElement('img');
-    cImg.className='card-img';
-    cImg.src=`images/${({s:'suspect',t:'tool',m:'motive'})[type]}/${card}.png`;
-    cImg.alt=card;
-    cImg.onerror=function(){
-      this.style.display='none';
-      fbSpan.style.display='flex';
-    };
-    artDiv.appendChild(cImg);
-    const fbSpan=document.createElement('div');
-    fbSpan.className='card-fb';
-    fbSpan.style.display='none';
-    fbSpan.innerHTML=`<span style="font-size:11px;color:var(--text2);">${card}</span>`;
-    artDiv.appendChild(fbSpan);
-    const badge=document.createElement('div');
-    badge.className=`gcard-badge ${badgeCls}`;
-    badge.textContent=typeLabel;
-    artDiv.appendChild(badge);
-    d.appendChild(artDiv);
-    d.innerHTML+=`${hintsHtml}${tokHtml}`;
+    d.innerHTML=`
+      <div class="gcard-art">
+        <span>${EMOJIS[card]||'?'}</span>
+        <div class="gcard-badge ${badgeCls}">${typeLabel}</div>
+      </div>
+      <div class="gcard-name">${card}</div>
+      ${hintsHtml}
+      ${tokHtml}
+    `;
     if(clickable)d.onclick=()=>onCardClick(card,type);
     row.appendChild(d);
   });
@@ -1578,13 +1194,13 @@ function renderBottomPanel(){
       </div>
       <div class="tiles-row" style="margin-bottom:4px;">
         <span class="tile-label">형용사</span>
-        ${adjAvail.map(t=>`<div class="cv-tile-thumb adj-tile${G.selAdj===t?' sel':''}" onclick="selAdj('${t}')" style="cursor:pointer;flex-shrink:0;"><img class="tile-bg" src="images/adj/bg.png" onerror="this.style.display='none'"><span class="tile-text">${t}</span></div>`).join('')}
-        ${G.usedAdj.map(t=>`<div class="cv-tile-thumb adj-tile" style="opacity:0.3;flex-shrink:0;"><img class="tile-bg" src="images/adj/bg.png" onerror="this.style.display='none'"><span class="tile-text">${t}</span></div>`).join('')}
+        ${adjAvail.map(t=>`<span class="tile adj${G.selAdj===t?' sel':''}" onclick="selAdj('${t}')">${t}</span>`).join('')}
+        ${G.usedAdj.map(t=>`<span class="tile adj used">${t}</span>`).join('')}
       </div>
       <div class="tiles-row" style="margin-bottom:6px;">
         <span class="tile-label">명사</span>
-        ${nounAvail.map(t=>`<div class="cv-tile-thumb noun-tile${G.selNoun===t?' sel':''}" onclick="selNoun('${t}')" style="cursor:pointer;flex-shrink:0;"><img class="tile-bg" src="images/noun/bg.png" onerror="this.style.display='none'"><span class="tile-text">${t}</span></div>`).join('')}
-        ${G.usedNoun.map(t=>`<div class="cv-tile-thumb noun-tile" style="opacity:0.3;flex-shrink:0;"><img class="tile-bg" src="images/noun/bg.png" onerror="this.style.display='none'"><span class="tile-text">${t}</span></div>`).join('')}
+        ${nounAvail.map(t=>`<span class="tile noun${G.selNoun===t?' sel':''}" onclick="selNoun('${t}')">${t}</span>`).join('')}
+        ${G.usedNoun.map(t=>`<span class="tile noun used">${t}</span>`).join('')}
       </div>
       <div class="bp-row">
         <span class="bp-msg" style="font-size:11px;color:${canPlace?'var(--gold)':'var(--text3)'};">${step}</span>
