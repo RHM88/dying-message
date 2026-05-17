@@ -880,29 +880,34 @@ let G={};
 const CAT_FOLDER={s:'suspect',t:'tool',m:'motive'};
 const CARD_FORMATS=['webm','mp4','gif','png'];
 
-async function resolveCardSrc(folder,name){
-  for(const ext of CARD_FORMATS){
-    const src=`images/${folder}/${name}.${ext}`;
-    const ok=await fetch(src,{method:'HEAD'}).then(r=>r.ok).catch(()=>false);
-    if(ok) return {src,isVideo:['webm','mp4'].includes(ext)};
-  }
-  return null;
-}
-
-async function applyCardMedia(artDiv,folder,name){
-  const result=await resolveCardSrc(folder,name);
+function applyCardMedia(artDiv,folder,name){
+  const exts=['webm','mp4','gif','png'];
+  let i=0;
   const fb=artDiv.querySelector('.card-fb');
-  if(!result){if(fb)fb.style.display='flex';return;}
-  if(result.isVideo){
-    const vid=document.createElement('video');
-    vid.className='card-img';vid.src=result.src;
-    vid.autoplay=true;vid.loop=true;vid.muted=true;vid.playsInline=true;
-    vid.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:contain;';
-    artDiv.insertBefore(vid,artDiv.firstChild);
-  } else {
-    const img=artDiv.querySelector('img.card-img');
-    if(img) img.src=result.src;
+  const existImg=artDiv.querySelector('img.card-img');
+  function tryNext(){
+    if(i>=exts.length){if(fb)fb.style.display='flex';return;}
+    const ext=exts[i++];
+    const src=`images/${folder}/${name}.${ext}`;
+    const isVideo=['webm','mp4'].includes(ext);
+    if(isVideo){
+      const vid=document.createElement('video');
+      vid.className='card-img';
+      vid.autoplay=true;vid.loop=true;vid.muted=true;vid.playsInline=true;
+      vid.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;';
+      vid.onerror=tryNext;
+      vid.oncanplay=()=>{if(existImg)existImg.style.display='none';artDiv.insertBefore(vid,artDiv.firstChild);};
+      vid.src=src;
+    } else {
+      if(existImg){
+        const oldErr=existImg.onerror;
+        existImg.onerror=tryNext;
+        existImg.onload=()=>{existImg.onerror=null;};
+        existImg.src=src;
+      } else tryNext();
+    }
   }
+  tryNext();
 }
 
 function getCardImg(name, catKey){
@@ -1084,23 +1089,33 @@ function showScr(id){document.querySelectorAll('.screen').forEach(s=>s.classList
 // ── 배경 미디어 자동감지 ──
 const BG_FORMATS = ['webm','mp4','gif','png','jpg'];
 
-async function setBg(key){
-  const container = document.getElementById('bg-container');
+function setBg(key){
+  const container=document.getElementById('bg-container');
   if(!container) return;
-  for(const ext of BG_FORMATS){
-    const src = `images/bg/${key}.${ext}`;
-    const ok = await fetch(src,{method:'HEAD'}).then(r=>r.ok).catch(()=>false);
-    if(!ok) continue;
-    const isVideo = ['webm','mp4'].includes(ext);
+  const exts=['webm','mp4','gif','png','jpg'];
+  let i=0;
+  function tryNext(){
+    if(i>=exts.length){container.innerHTML='';return;}
+    const ext=exts[i++];
+    const src=`images/bg/${key}.${ext}`;
+    const isVideo=['webm','mp4'].includes(ext);
     if(isVideo){
-      container.innerHTML=`<video class="bg-media" autoplay loop muted playsinline src="${src}"></video>`;
+      const vid=document.createElement('video');
+      vid.className='bg-media';
+      vid.autoplay=true;vid.loop=true;vid.muted=true;vid.playsInline=true;
+      vid.onerror=tryNext;
+      vid.onloadeddata=()=>{container.innerHTML='';container.appendChild(vid);};
+      vid.onerror=tryNext;
+      vid.src=src;
     } else {
-      container.innerHTML=`<img class="bg-media" src="${src}" alt="">`;
+      const img=document.createElement('img');
+      img.className='bg-media';img.alt='';
+      img.onerror=tryNext;
+      img.onload=()=>{container.innerHTML='';container.appendChild(img);};
+      img.src=src;
     }
-    return;
   }
-  // 아무 파일도 없으면 배경 제거
-  container.innerHTML='';
+  tryNext();
 }
 
 // 초기 배경 로드
