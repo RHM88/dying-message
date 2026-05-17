@@ -1105,10 +1105,9 @@ function setBg(key){
       vid.className='bg-media';
       vid.autoplay=true;vid.loop=true;vid.muted=true;vid.playsInline=true;
       vid.onerror=tryNext;
-      vid.onloadeddata=()=>{container.innerHTML='';container.appendChild(vid);};
-      vid.onloadstart=()=>{container.innerHTML='';container.appendChild(vid);};
-      vid.onerror=tryNext;
+      vid.oncanplaythrough=()=>{container.innerHTML='';container.appendChild(vid);};
       vid.src=src;
+      vid.load();
     } else {
       const img=document.createElement('img');
       img.className='bg-media';img.alt='';
