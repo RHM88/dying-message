@@ -1093,30 +1093,28 @@ const BG_FORMATS = ['webm','mp4','gif','png','jpg'];
 function setBg(key){
   const container=document.getElementById('bg-container');
   if(!container) return;
-  const exts=['webm','mp4','gif','png','jpg'];
-  let i=0;
-  function tryNext(){
-    if(i>=exts.length){container.innerHTML='';return;}
-    const ext=exts[i++];
-    const src=`images/bg/${key}.${ext}`;
-    const isVideo=['webm','mp4'].includes(ext);
-    if(isVideo){
-      const vid=document.createElement('video');
-      vid.className='bg-media';
-      vid.autoplay=true;vid.loop=true;vid.muted=true;vid.playsInline=true;
-      vid.onerror=tryNext;
-      vid.oncanplaythrough=()=>{container.innerHTML='';container.appendChild(vid);};
-      vid.src=src;
-      vid.load();
-    } else {
-      const img=document.createElement('img');
-      img.className='bg-media';img.alt='';
-      img.onerror=tryNext;
-      img.onload=()=>{container.innerHTML='';container.appendChild(img);};
-      img.src=src;
-    }
-  }
-  tryNext();
+  container.innerHTML='';
+  // video 태그에 source 여러개 — 브라우저가 알아서 선택
+  const vid=document.createElement('video');
+  vid.className='bg-media';
+  vid.autoplay=true;vid.loop=true;vid.muted=true;vid.playsInline=true;
+  ['webm','mp4'].forEach(ext=>{
+    const s=document.createElement('source');
+    s.src=`images/bg/${key}.${ext}`;
+    s.type=ext==='webm'?'video/webm':'video/mp4';
+    vid.appendChild(s);
+  });
+  // video 실패 시 img fallback
+  vid.onerror=()=>{
+    const img=document.createElement('img');
+    img.className='bg-media';img.alt='';
+    img.src=`images/bg/${key}.png`;
+    img.onerror=()=>{img.src=`images/bg/${key}.jpg`;};
+    container.innerHTML='';
+    container.appendChild(img);
+  };
+  container.appendChild(vid);
+  vid.load();
 }
 
 // 초기 배경 로드
