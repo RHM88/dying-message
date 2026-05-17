@@ -1119,8 +1119,6 @@ function setBg(key){
 }
 
 // 초기 배경 로드
-setBg('default');
-
 function selP(n){
   G.pc=n;
   setBg(`${n}p`);
@@ -1808,6 +1806,9 @@ function mAct(a){
     showScr('title-screen');
   }
 }
+</script>
+<script>
+document.addEventListener('DOMContentLoaded',()=>setBg('default'));
 </script>
 </body>
 </html>
