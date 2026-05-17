@@ -1093,6 +1093,9 @@ const BG_FORMATS = ['webm','mp4','gif','png','jpg'];
 function setBg(key){
   const container=document.getElementById('bg-container');
   if(!container) return;
+  // 이전 video 완전 정리
+  const old=container.querySelector('video');
+  if(old){old.pause();old.src='';old.load();}
   container.innerHTML='';
   // video 태그에 source 여러개 — 브라우저가 알아서 선택
   const vid=document.createElement('video');
