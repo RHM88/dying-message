@@ -32,8 +32,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 
 /* ─── TITLE ─── */
 #title-screen{
-  flex-direction:column;align-items:center;justify-content:flex-end;
-  min-height:100vh;padding:20px 20px 32px;gap:12px;
+  flex-direction:column;align-items:center;justify-content:center;
+  min-height:100vh;padding:32px 20px;gap:28px;
   position:relative;overflow:hidden;
 }
 /* 배경 video/img 공통 */
@@ -48,17 +48,12 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
   z-index:0;
 }
 #title-screen > *{position:relative;z-index:1;}
-#bg-container{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
-.bg-layer{
-  position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;transition:opacity 0.6s ease;
-}
 .title-eyebrow{font-size:10px;letter-spacing:6px;color:var(--text3);font-weight:300;}
 .title-main{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,12vw,96px);color:#fff;letter-spacing:6px;line-height:0.9;text-align:center;}
 .title-sub{font-family:'DM Serif Display',serif;font-style:italic;font-size:15px;color:var(--gold);letter-spacing:2px;margin-top:4px;}
 .title-divider{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:4px auto;}
 
-.setup-card{background:rgba(19,22,29,0.82);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:12px;padding:16px 20px;width:100%;max-width:400px;display:flex;flex-direction:column;gap:14px;}
+.setup-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;width:100%;max-width:400px;display:flex;flex-direction:column;gap:20px;}
 .setup-label{font-size:10px;letter-spacing:3px;color:var(--text3);text-align:center;}
 
   /* ── 카드 뷰어 ── */
@@ -176,18 +171,17 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
   /* ── 카드 뷰어 독립 박스 ── */
   .cv-box{
     width:100%;max-width:400px;
-    background:rgba(19,22,29,0.82);
+    background:var(--surface);
     border:1px solid rgba(200,169,110,0.35);
-    border-radius:12px;
+    border-radius:16px;
     overflow:hidden;
     transition:border-color .2s;
-    backdrop-filter:blur(8px);
   }
   .cv-box:hover{border-color:rgba(200,169,110,0.6);}
   .cv-box-header{
     width:100%;background:none;border:none;
     display:flex;align-items:center;justify-content:space-between;
-    padding:10px 14px;cursor:pointer;gap:14px;
+    padding:16px 18px;cursor:pointer;gap:14px;
   }
   .cv-box-left{display:flex;align-items:center;gap:12px;}
   .cv-box-icon-wrap{
@@ -696,7 +690,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 <div id="title-screen" class="screen active">
   <!-- 배경 미디어 (selP() 에서 교체) -->
   <div id="bg-container"></div>
-  <div style="flex:1;"></div>
   <div class="title-eyebrow">BOARD GAME</div>
   <div>
     <div class="title-main">DYING<br>MESSAGE</div>
@@ -887,34 +880,29 @@ let G={};
 const CAT_FOLDER={s:'suspect',t:'tool',m:'motive'};
 const CARD_FORMATS=['webm','mp4','gif','png'];
 
-function applyCardMedia(artDiv,folder,name){
-  const exts=['webm','mp4','gif','png'];
-  let i=0;
-  const fb=artDiv.querySelector('.card-fb');
-  const existImg=artDiv.querySelector('img.card-img');
-  function tryNext(){
-    if(i>=exts.length){if(fb)fb.style.display='flex';return;}
-    const ext=exts[i++];
+async function resolveCardSrc(folder,name){
+  for(const ext of CARD_FORMATS){
     const src=`images/${folder}/${name}.${ext}`;
-    const isVideo=['webm','mp4'].includes(ext);
-    if(isVideo){
-      const vid=document.createElement('video');
-      vid.className='card-img';
-      vid.autoplay=true;vid.loop=true;vid.muted=true;vid.playsInline=true;
-      vid.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;';
-      vid.onerror=tryNext;
-      vid.oncanplay=()=>{if(existImg)existImg.style.display='none';artDiv.insertBefore(vid,artDiv.firstChild);};
-      vid.src=src;
-    } else {
-      if(existImg){
-        const oldErr=existImg.onerror;
-        existImg.onerror=tryNext;
-        existImg.onload=()=>{existImg.onerror=null;};
-        existImg.src=src;
-      } else tryNext();
-    }
+    const ok=await fetch(src,{method:'HEAD'}).then(r=>r.ok).catch(()=>false);
+    if(ok) return {src,isVideo:['webm','mp4'].includes(ext)};
   }
-  tryNext();
+  return null;
+}
+
+async function applyCardMedia(artDiv,folder,name){
+  const result=await resolveCardSrc(folder,name);
+  const fb=artDiv.querySelector('.card-fb');
+  if(!result){if(fb)fb.style.display='flex';return;}
+  if(result.isVideo){
+    const vid=document.createElement('video');
+    vid.className='card-img';vid.src=result.src;
+    vid.autoplay=true;vid.loop=true;vid.muted=true;vid.playsInline=true;
+    vid.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:contain;';
+    artDiv.insertBefore(vid,artDiv.firstChild);
+  } else {
+    const img=artDiv.querySelector('img.card-img');
+    if(img) img.src=result.src;
+  }
 }
 
 function getCardImg(name, catKey){
@@ -1096,76 +1084,28 @@ function showScr(id){document.querySelectorAll('.screen').forEach(s=>s.classList
 // ── 배경 미디어 자동감지 ──
 const BG_FORMATS = ['webm','mp4','gif','png','jpg'];
 
-function setBg(key){
-  const container=document.getElementById('bg-container');
+async function setBg(key){
+  const container = document.getElementById('bg-container');
   if(!container) return;
-
-  // 기존 레이어 페이드아웃 후 제거
-  const prev=container.querySelectorAll('video,img');
-  prev.forEach(el=>{
-    el.style.opacity='0';
-    setTimeout(()=>el.remove(), 700);
-  });
-
-  // 인트로 영상 (1회 재생)
-  const intro=document.createElement('video');
-  intro.className='bg-layer';
-  intro.autoplay=true;
-  intro.muted=true;
-  intro.playsInline=true;
-  intro.loop=false;
-  intro.src=`images/bg/${key}.mp4`;
-  intro.style.opacity='0';
-
-  // 루프 영상 (루핑)
-  const loop=document.createElement('video');
-  loop.className='bg-layer';
-  loop.autoplay=false;
-  loop.muted=true;
-  loop.playsInline=true;
-  loop.loop=true;
-  loop.src=`images/bg/${key}_loop.mp4`;
-  loop.style.opacity='0';
-
-  // 인트로 재생 완료 → 루프로 크로스페이드
-  intro.addEventListener('ended',()=>{
-    loop.play();
-    loop.style.opacity='1';
-    setTimeout(()=>{
-      intro.style.opacity='0';
-      setTimeout(()=>intro.remove(), 700);
-    }, 100);
-  });
-
-  // 인트로 로드 실패 → 루프 바로 재생
-  intro.addEventListener('error',()=>{
-    intro.remove();
-    loop.autoplay=true;
-    loop.style.opacity='1';
-  });
-
-  // 루프 로드 실패 → png fallback
-  loop.addEventListener('error',()=>{
-    loop.remove();
-    const img=document.createElement('img');
-    img.className='bg-layer';
-    img.src=`images/bg/${key}.png`;
-    img.style.opacity='1';
-    container.appendChild(img);
-  });
-
-  container.appendChild(loop);
-  container.appendChild(intro);
-
-  // 페이드인
-  requestAnimationFrame(()=>{
-    requestAnimationFrame(()=>{
-      intro.style.opacity='1';
-    });
-  });
+  for(const ext of BG_FORMATS){
+    const src = `images/bg/${key}.${ext}`;
+    const ok = await fetch(src,{method:'HEAD'}).then(r=>r.ok).catch(()=>false);
+    if(!ok) continue;
+    const isVideo = ['webm','mp4'].includes(ext);
+    if(isVideo){
+      container.innerHTML=`<video class="bg-media" autoplay loop muted playsinline src="${src}"></video>`;
+    } else {
+      container.innerHTML=`<img class="bg-media" src="${src}" alt="">`;
+    }
+    return;
+  }
+  // 아무 파일도 없으면 배경 제거
+  container.innerHTML='';
 }
 
 // 초기 배경 로드
+setBg('default');
+
 function selP(n){
   G.pc=n;
   setBg(`${n}p`);
@@ -1853,9 +1793,6 @@ function mAct(a){
     showScr('title-screen');
   }
 }
-</script>
-<script>
-document.addEventListener('DOMContentLoaded',()=>setBg('default'));
 </script>
 </body>
 </html>
